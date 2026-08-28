@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import { Volume2, VolumeX, ArrowUpRight } from 'lucide-react';
 import { portfolioData } from '../../data/portfolioData';
-import avatarImg from '../../assets/erland_avatar_3d.jpg';
+import { avatarBase64 } from '../../assets/avatarData';
 
 export function Navbar({ isMuted, isPlayingBGM, onToggleBGM, onScrollTo }) {
   const { personal } = portfolioData;
@@ -14,7 +14,7 @@ export function Navbar({ isMuted, isPlayingBGM, onToggleBGM, onScrollTo }) {
         <div className="flex items-center gap-2.5 bg-[#FFFFFF] border border-[#D1D5DB] rounded-full p-1.5 pr-4 shadow-sm">
           <div className="w-8 h-8 rounded-full overflow-hidden border border-[#D1D5DB] flex-shrink-0 bg-[#121316] flex items-center justify-center font-bold text-white text-xs font-mono">
             <img
-              src={avatarImg}
+              src={avatarBase64}
               alt={personal.name}
               className="w-full h-full object-cover"
             />
