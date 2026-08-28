@@ -3,7 +3,6 @@ import { ShowcaseScene } from './components/3d/ShowcaseScene';
 import { Navbar } from './components/ui/Navbar';
 import { HeroSection } from './components/sections/HeroSection';
 import { ProjectsSection } from './components/sections/ProjectsSection';
-import { RiceSandboxSection } from './components/sections/RiceSandboxSection';
 import { ExperienceSection } from './components/sections/ExperienceSection';
 import { SkillsSection } from './components/sections/SkillsSection';
 import { CertificationsSection } from './components/sections/CertificationsSection';
@@ -78,11 +77,6 @@ export default function App() {
           }}
           onOpenProjectDetail={handleOpenProjectDetail}
         />
-
-        {/* Interactive PRD & RICE Prioritization Engine */}
-        <RiceSandboxSection onSoundEffect={(type) => {
-          if (type === 'interact') sounds.playInteract();
-        }} />
 
         <ExperienceSection />
 
