@@ -353,6 +353,73 @@ export function ProjectDetailModal({ project, onClose }) {
             </div>
           )}
 
+          {/* Distribution & Go-To-Market Strategy (If Available) */}
+          {project.distributionStrategy && (
+            <div className="space-y-3 font-mono">
+              <span className="text-xs font-bold text-[#121316] uppercase block flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+                DISTRIBUTION & GTM ARCHITECTURE (DUAL-TIER):
+              </span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {project.distributionStrategy.map((dist, i) => (
+                  <div key={i} className="bg-[#F0F9FF] border border-[#BAE6FD] p-4 rounded-xl space-y-1.5">
+                    <div className="text-xs font-bold text-[#0369A1] font-heading flex items-center justify-between">
+                      <span>{dist.channel}</span>
+                      <span className="text-[10px] text-[#0284C7] bg-blue-100 px-2 py-0.5 rounded">GTM-0{i + 1}</span>
+                    </div>
+                    <p className="text-xs text-[#0C4A6E] font-sans leading-relaxed">
+                      {dist.detail}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Multi-Model AI Orchestration Pipeline Table (If Available) */}
+          {project.orchestrationPipeline && (
+            <div className="space-y-3 font-mono">
+              <span className="text-xs font-bold text-[#121316] uppercase block flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-purple-600"></span>
+                MULTI-MODEL AI ORCHESTRATION PIPELINE & FAIL-SAFE DESIGN:
+              </span>
+              <div className="overflow-x-auto rounded-xl border border-[#E5E7EB]">
+                <table className="w-full text-left text-xs border-collapse font-sans">
+                  <thead>
+                    <tr className="bg-[#121316] text-[#F3F4F6] font-mono text-[11px]">
+                      <th className="p-3 font-bold border-r border-[#2A2E37]">Tahapan Pipeline</th>
+                      <th className="p-3 font-bold border-r border-[#2A2E37]">Primary Provider</th>
+                      <th className="p-3 font-bold border-r border-[#2A2E37]">Fallback Engine</th>
+                      <th className="p-3 font-bold">Product Decision / Trade-off</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#E5E7EB] bg-white">
+                    {project.orchestrationPipeline.map((row, i) => (
+                      <tr key={i} className="hover:bg-[#F9FAFB] transition-colors">
+                        <td className="p-3 font-mono font-bold text-[#121316] whitespace-nowrap bg-[#F9FAFB] border-r border-[#E5E7EB]">
+                          {row.stage}
+                        </td>
+                        <td className="p-3 font-mono text-emerald-700 font-bold whitespace-nowrap border-r border-[#E5E7EB]">
+                          <span className="px-2 py-0.5 bg-emerald-50 border border-emerald-200 rounded">
+                            {row.primary}
+                          </span>
+                        </td>
+                        <td className="p-3 font-mono text-[#4B5563] whitespace-nowrap border-r border-[#E5E7EB]">
+                          <span className="px-2 py-0.5 bg-gray-100 border border-gray-200 rounded text-[11px]">
+                            {row.fallback}
+                          </span>
+                        </td>
+                        <td className="p-3 text-[#374151] leading-relaxed text-xs">
+                          {row.tradeoff}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
           {/* Product Success Metrics (KPIs) */}
           {project.productMetrics && (
             <div className="space-y-3 font-mono">
@@ -367,6 +434,38 @@ export function ProjectDetailModal({ project, onClose }) {
                     <p className="text-[11px] text-[#6B7280] font-sans">{m.desc}</p>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* PM Interview Framing (STAR Method) */}
+          {project.starFraming && (
+            <div className="bg-[#F8FAFC] border-2 border-[#CBD5E1] p-6 rounded-2xl space-y-4 font-mono">
+              <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-2">
+                <span className="text-xs font-bold text-[#0F172A] uppercase flex items-center gap-2">
+                  🎙️ PM INTERVIEW PITCH & EXECUTIVE FRAMING (STAR METHOD):
+                </span>
+                <span className="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-bold">
+                  LEADERSHIP READY
+                </span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-sans text-xs">
+                <div className="p-3 rounded-lg bg-white border border-[#E2E8F0] space-y-1">
+                  <span className="font-mono font-bold text-blue-600 block text-[11px]">SITUATION:</span>
+                  <p className="text-[#334155] leading-relaxed">{project.starFraming.situation}</p>
+                </div>
+                <div className="p-3 rounded-lg bg-white border border-[#E2E8F0] space-y-1">
+                  <span className="font-mono font-bold text-purple-600 block text-[11px]">TASK:</span>
+                  <p className="text-[#334155] leading-relaxed">{project.starFraming.task}</p>
+                </div>
+                <div className="p-3 rounded-lg bg-white border border-[#E2E8F0] space-y-1">
+                  <span className="font-mono font-bold text-amber-600 block text-[11px]">ACTION:</span>
+                  <p className="text-[#334155] leading-relaxed">{project.starFraming.action}</p>
+                </div>
+                <div className="p-3 rounded-lg bg-white border border-[#E2E8F0] space-y-1">
+                  <span className="font-mono font-bold text-emerald-600 block text-[11px]">RESULT:</span>
+                  <p className="text-[#334155] leading-relaxed font-medium">{project.starFraming.result}</p>
+                </div>
               </div>
             </div>
           )}

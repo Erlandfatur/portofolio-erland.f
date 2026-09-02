@@ -203,28 +203,108 @@ export const portfolioData = {
     {
       id: "speech-translator",
       title: "Speech Translator Enterprise",
-      subtitle: "Real-Time Audio Ingestion & Multilingual Streaming Translation",
-      role: "System Architect & Developer",
+      subtitle: "Enterprise Speech-to-Speech AI Translator & Dubbing Engine",
+      role: "Technical Product Manager & System Architect",
       category: "ai",
+      domain: "Enterprise SaaS, GenAI Audio Pipeline, Real-Time Collaboration",
       status: "Live on GitHub Pages",
       hasLivePreview: true,
       githubIoUrl: "https://erlandfatur.github.io/Speech-Translator-enterprise/",
       demoUrl: "https://erlandfatur.github.io/Speech-Translator-enterprise/",
       githubUrl: "https://github.com/Erlandfatur/Speech-Translator-enterprise",
-      language: "Python / JS",
-      problem: "Cross-border global meetings suffer from 2-3 second latency lag when using legacy translation tools, disrupting natural conversation flow.",
-      solution: "Engineered a low-latency audio buffer and streaming inference pipeline delivering sub-500ms real-time audio transcription and translation.",
+      language: "Python / WebSockets / GenAI / Chrome MV3",
+      problem: "Rapat bisnis lintas bahasa (misal: EN ↔ ID) via Zoom/Teams sering terhambat oleh live captioning satu arah yang kaku, terjemahan harfiah tanpa pemahaman konteks industri, serta latensi tinggi yang merusak dinamika percakapan.",
+      solution: "Pipeline Speech-to-Speech dua arah (bidirectional) berlatensi rendah dengan arsitektur orkestrasi model AI (Whisper → Llama/Gemini → Neural TTS), dilengkapi injeksi Custom Glossary (~370 istilah korporat) dan mekanisme fail-safe fallback.",
+      distributionStrategy: [
+        { channel: "Chrome Extension MV3", detail: "Injeksi audio langsung via tabCapture tanpa perlu bot pihak ketiga masuk ke room meeting." },
+        { channel: "Desktop Client (BYOK)", detail: "Aplikasi mandiri berbasis Bring-Your-Own-Key untuk pengguna dengan privasi data ketat dan biaya infrastruktur nol bagi penyedia." }
+      ],
       architecture: [
-        "WebSocket audio chunk streaming directly from browser microphone to inference service.",
-        "Sliding-window context buffer maintaining sentence coherence while translating incrementally.",
-        "Multi-language selector supporting instant English, Indonesian, Japanese, and Mandarin."
+        "VAD & Chunking: Silero VAD v5 (ONNX) dengan dynamic silence detection (≥ 0.6s) memotong konsumsi token hingga 40%.",
+        "STT & Transcription: Groq Whisper Large v3 Turbo (sub-detik inference) dengan fallback ke FasterWhisper local.",
+        "NMT & Custom Glossary: Groq Llama-3.3-70B diinjeksi ~370 enterprise glossaries dengan fallback ke Gemini Flash / Google Translate.",
+        "TTS & Dubbing: Edge-TTS Neural voice streaming dengan fallback ke Piper TTS local ONNX."
       ],
+      orchestrationPipeline: [
+        {
+          stage: "VAD & Chunking",
+          primary: "Silero VAD v5 (ONNX)",
+          fallback: "Fixed Time-Buffer",
+          tradeoff: "Mengurangi beban komputasi server dengan hanya memproses audio aktif (hemat cost API hingga 40%)."
+        },
+        {
+          stage: "STT (Transkripsi)",
+          primary: "Groq Whisper Large v3 Turbo",
+          fallback: "FasterWhisper (Local)",
+          tradeoff: "Kecepatan inferensi sub-detik vs keandalan saat koneksi API eksternal mengalami throttling."
+        },
+        {
+          stage: "NMT (Terjemahan)",
+          primary: "Groq Llama-3.3-70B",
+          fallback: "Gemini Flash / Google Translate",
+          tradeoff: "Pemahaman konteks istilah bisnis lokal + injeksi prompt custom glossary (~370 korporat)."
+        },
+        {
+          stage: "TTS (Dubbing)",
+          primary: "Edge-TTS (Neural)",
+          fallback: "Piper TTS (Local ONNX)",
+          tradeoff: "Suara manusiawi alami tanpa biaya lisensi suara per karakter yang mahal."
+        }
+      ],
+      systemFlow: [
+        { step: "01. Capture", detail: "Chrome Extension MV3 menangkap clean audio stream via tabCapture API / Virtual Cable tanpa bot pihak ketiga." },
+        { step: "02. VAD Detection", detail: "Silero VAD ONNX mendeteksi jeda silence ≥ 0.6 detik setelah buffer minimal 1.5 detik terpenuhi untuk flush payload." },
+        { step: "03. Groq STT", detail: "Audio buffer di-streaming ke Groq Whisper Large v3 Turbo untuk transkripsi akurat dalam < 350ms." },
+        { step: "04. Contextual NMT", detail: "Llama-3.3-70B menerjemahkan dengan injeksi ~370 technical/enterprise glossary terms." },
+        { step: "05. Neural Dubbing", detail: "Edge-TTS mensintesis audio natural suara manusiawi, di-stream balik via WebSocket dengan P95 latency < 1.5s." }
+      ],
+      gwtaiSpecs: [
+        {
+          scenario: "Dynamic Buffer Flush & Low-Latency Translation",
+          given: "Sesi terjemahan suara dua arah sedang aktif pada Chrome Extension",
+          when: "Silero VAD mendeteksi jeda keheningan (silence) ≥ 0.6 detik setelah buffer minimal 1.5 detik terpenuhi",
+          then: "Sistem langsung melakukan flush buffer audio ke WebSocket server",
+          and: "Server mengembalikan stream audio hasil dubbing dalam batas latensi target ≤ 1.2 detik",
+          ifCondition: "Latensi inferensi melebihi 2.0 detik akibat antrean jaringan, sistem otomatis mengaktifkan Subtitle Overlay sebagai fallback visual sebelum audio dubbing selesai di-render."
+        },
+        {
+          scenario: "Enterprise Token & Rate Limiting (Cost Protection)",
+          given: "User enterprise menggunakan koneksi WebSocket berbayar dengan sisa kredit 0",
+          when: "User mencoba menginisiasi koneksi handshake ke ws://localhost:8000/ws/translate?token=<jwt>",
+          then: "Server merespons dengan status penolakan WebSocket close code 4402 (Payment Required)",
+          and: "Antarmuka extension memunculkan modal: 'Monthly quota reached. Upgrade plan or switch to BYOK Desktop mode.'"
+        }
+      ],
+      tradeoffs: [
+        {
+          title: "API Orchestration vs. Self-Hosted Heavy Models",
+          decision: "Menggunakan ultra-fast API (Groq Llama-3.3 & Whisper) sebagai tier utama, model lokal hanya sebagai emergency fallback",
+          impact: "Mencegah pembengkakan biaya GPU cloud hingga ribuan dolar/bulan, mempertahankan margin keuntungan SaaS sambil tetap menjaga uptime 99.9%."
+        },
+        {
+          title: "Chrome Extension tabCapture vs. Virtual Meeting Bot",
+          decision: "Chrome Extension MV3 via audio capture langsung di browser pengguna",
+          impact: "Bypass proteksi IT security enterprise yang biasanya memblokir bot eksternal (Otter/Fireflies) untuk join meeting room privat."
+        }
+      ],
+      productMetrics: [
+        { label: "End-to-End Latency", value: "< 1.5s", desc: "P95 latensi speech-to-speech terjaga natural tanpa awkward silence" },
+        { label: "Domain Accuracy", value: "98.6%", desc: "Glossary benchmark match untuk istilah teknis bisnis & perbankan" },
+        { label: "Cost-per-Meeting-Hour", value: "< $0.15/hr", desc: "Biaya komputasi efisien via dynamic VAD silence flushing" }
+      ],
+      starFraming: {
+        situation: "Trilemma real-time AI: latensi, biaya API GPU yang membakar margin, dan akurasi konteks terminologi bisnis.",
+        task: "Mendesain arsitektur produk pragmatis yang scalable, enterprise-ready, dan tidak membutuhkan izin admin IT meeting room.",
+        action: "Mengimplementasikan dynamic silence VAD (hemat 40% cost token), fail-safe fallback multi-provider bertingkat (Groq, Gemini, Edge-TTS, Piper), serta split tier Enterprise Cloud vs Desktop BYOK.",
+        result: "Mencapai P95 latency < 1.5s, akurasi glossary 98.6%, serta biaya running < $0.15/meeting hour."
+      },
       keyPoints: [
-        "Integrated real-time speech recognition models with low-latency streaming audio buffers.",
-        "Designed clean pipeline architecture handling multi-speaker transcription and domain-specific vocabulary.",
-        "Built modular web interface on GitHub Pages with instant audio wave visualization.",
+        "Mendesain arsitektur orkestrasi multi-model AI (Whisper, Llama 3.3, Edge-TTS) dengan zero-downtime fallback ke model lokal.",
+        "Mengurangi pengeluaran API hingga 40% melalui dynamic speech buffer flushing berbasis Silero VAD.",
+        "Menembus restriksi IT security enterprise menggunakan arsitektur Chrome Extension MV3 tanpa meeting bot.",
+        "Menyusun strategi monetisasi fleksibel: Enterprise Credit System via WebSocket JWT vs Free BYOK Desktop app."
       ],
-      techStack: ["Python", "Speech AI", "Streaming Audio", "WebSockets", "GitHub Pages"],
+      techStack: ["Python", "Groq Whisper v3", "Llama 3.3 70B", "Edge-TTS", "WebSockets", "Silero VAD", "Chrome MV3"],
     },
     {
       id: "nusantara-trading",
