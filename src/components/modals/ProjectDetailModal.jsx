@@ -162,15 +162,104 @@ export function ProjectDetailModal({ project, onClose }) {
                 <span className="text-[10px] text-[#9CA3AF]">DUAL-MODALITY PROTOCOL</span>
               </div>
 
-              {/* Visual ASCII / Lucidchart-style Flowchart */}
-              <div className="p-4 bg-[#0B0C0E] rounded-xl border border-[#2A2E37] text-[11px] leading-relaxed text-[#9CA3AF] overflow-x-auto whitespace-pre font-mono">
-{`[User Selects File]
-      │
-      ▼
-< Network Context? >
-      ├── [Air-Gapped / No Network] ──► [Chunk Binary File] ──► [Render Cyclic Animated QR (10-15 FPS)] ──► [Receiver WebCam Scans] ──► [Verify SHA-256 & Assemble]
-      │
-      └── [High Speed / Connected]  ──► [Init PeerJS Client] ──► [STUN Handshake & Link Gen] ──► [Establish RTCDataChannel] ──► [Direct Binary Stream ArrayBuffer]`}
+              {/* Rich Visual BPMN 2.0 Flowchart Diagram (SVG) */}
+              <div className="p-5 bg-[#0B0C0E] rounded-xl border border-[#2A2E37] overflow-x-auto">
+                <div className="min-w-[780px] py-2">
+                  <svg viewBox="0 0 880 260" className="w-full h-auto text-xs select-none">
+                    <defs>
+                      <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 1 L 10 5 L 0 9 z" fill="#FF5A00" />
+                      </marker>
+                      <linearGradient id="boxGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#1F232D" />
+                        <stop offset="100%" stopColor="#13161C" />
+                      </linearGradient>
+                      <linearGradient id="gwGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#374151" />
+                        <stop offset="100%" stopColor="#1F2937" />
+                      </linearGradient>
+                    </defs>
+
+                    {/* Lane Labels */}
+                    <rect x="0" y="25" width="880" height="95" rx="8" fill="#14171F" stroke="#232733" strokeDasharray="3 3" />
+                    <text x="14" y="44" fill="#3B82F6" fontWeight="bold" fontSize="10" letterSpacing="0.05em">LANE A: AIR-GAPPED OPTICAL QR STREAM (100% OFFLINE)</text>
+
+                    <rect x="0" y="135" width="880" height="95" rx="8" fill="#14171F" stroke="#232733" strokeDasharray="3 3" />
+                    <text x="14" y="154" fill="#10B981" fontWeight="bold" fontSize="10" letterSpacing="0.05em">LANE B: WEBRTC DIRECT LINK (HIGH-SPEED P2P)</text>
+
+                    {/* Start Event: User Drops/Selects File */}
+                    <circle cx="50" cy="128" r="18" fill="#10B981" fillOpacity="0.2" stroke="#10B981" strokeWidth="2.5" />
+                    <circle cx="50" cy="128" r="8" fill="#10B981" />
+                    <text x="50" y="162" textAnchor="middle" fill="#9CA3AF" fontSize="10" fontWeight="bold">Intake File</text>
+
+                    {/* Arrow: Start to Gateway */}
+                    <line x1="70" y1="128" x2="135" y2="128" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+
+                    {/* BPMN Gateway (Diamond): Network Context? */}
+                    <g transform="translate(145, 108)">
+                      <polygon points="20,0 40,20 20,40 0,20" fill="url(#gwGrad)" stroke="#FF5A00" strokeWidth="2" />
+                      <text x="20" y="24" textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="bold">✕</text>
+                    </g>
+                    <text x="165" y="95" textAnchor="middle" fill="#F3F4F6" fontSize="10" fontWeight="bold">Network?</text>
+
+                    {/* Top Branch (Air-Gapped) */}
+                    <path d="M 165 108 L 165 72 L 225 72" fill="none" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+                    <text x="180" y="62" fill="#93C5FD" fontSize="9" fontWeight="bold">Air-Gapped</text>
+
+                    {/* Lane A - Task 1: Chunk Binary Payload */}
+                    <rect x="235" y="47" width="130" height="50" rx="8" fill="url(#boxGrad)" stroke="#3B82F6" strokeWidth="1.5" />
+                    <text x="300" y="68" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Chunk Binary File</text>
+                    <text x="300" y="84" textAnchor="middle" fill="#9CA3AF" fontSize="9">[index/total]:payload</text>
+
+                    <line x1="365" y1="72" x2="395" y2="72" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+
+                    {/* Lane A - Task 2: Render Cyclic Animated QR */}
+                    <rect x="405" y="47" width="145" height="50" rx="8" fill="url(#boxGrad)" stroke="#3B82F6" strokeWidth="1.5" />
+                    <text x="477" y="68" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Render Animated QR</text>
+                    <text x="477" y="84" textAnchor="middle" fill="#60A5FA" fontSize="9">Canvas Stream 10-15 FPS</text>
+
+                    <line x1="550" y1="72" x2="580" y2="72" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+
+                    {/* Lane A - Task 3: Receiver Webcam Scan */}
+                    <rect x="590" y="47" width="135" height="50" rx="8" fill="url(#boxGrad)" stroke="#3B82F6" strokeWidth="1.5" />
+                    <text x="657" y="68" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Receiver Webcam</text>
+                    <text x="657" y="84" textAnchor="middle" fill="#9CA3AF" fontSize="9">Optical Scan & Decode</text>
+
+                    {/* Bottom Branch (Connected / WebRTC) */}
+                    <path d="M 165 148 L 165 182 L 225 182" fill="none" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+                    <text x="180" y="176" fill="#A7F3D0" fontSize="9" fontWeight="bold">Online</text>
+
+                    {/* Lane B - Task 1: Init PeerJS & STUN */}
+                    <rect x="235" y="157" width="130" height="50" rx="8" fill="url(#boxGrad)" stroke="#10B981" strokeWidth="1.5" />
+                    <text x="300" y="178" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Init PeerJS Client</text>
+                    <text x="300" y="194" textAnchor="middle" fill="#9CA3AF" fontSize="9">STUN Handshake & URL</text>
+
+                    <line x1="365" y1="182" x2="395" y2="182" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+
+                    {/* Lane B - Task 2: RTCDataChannel Stream */}
+                    <rect x="405" y="157" width="145" height="50" rx="8" fill="url(#boxGrad)" stroke="#10B981" strokeWidth="1.5" />
+                    <text x="477" y="178" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Open RTCDataChannel</text>
+                    <text x="477" y="194" textAnchor="middle" fill="#34D399" fontSize="9">Direct P2P Memory Buffer</text>
+
+                    <line x1="550" y1="182" x2="580" y2="182" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+
+                    {/* Lane B - Task 3: Stream Binary ArrayBuffer */}
+                    <rect x="590" y="157" width="135" height="50" rx="8" fill="url(#boxGrad)" stroke="#10B981" strokeWidth="1.5" />
+                    <text x="657" y="178" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Stream ArrayBuffer</text>
+                    <text x="657" y="194" textAnchor="middle" fill="#9CA3AF" fontSize="9">Zero-Server Transit</text>
+
+                    {/* Merge to End Event: Verify SHA-256 Checksum & Assemble */}
+                    <path d="M 725 72 L 755 72 L 755 115" fill="none" stroke="#FF5A00" strokeWidth="2" />
+                    <path d="M 725 182 L 755 182 L 755 141" fill="none" stroke="#FF5A00" strokeWidth="2" />
+                    <line x1="755" y1="128" x2="795" y2="128" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+
+                    {/* End Event: Assembled File */}
+                    <circle cx="820" cy="128" r="20" fill="#EF4444" fillOpacity="0.15" stroke="#FF5A00" strokeWidth="3" />
+                    <circle cx="820" cy="128" r="14" fill="#FF5A00" />
+                    <text x="820" y="162" textAnchor="middle" fill="#F3F4F6" fontSize="10" fontWeight="bold">File Assembled</text>
+                    <text x="820" y="174" textAnchor="middle" fill="#9CA3AF" fontSize="8">Checksum Verified</text>
+                  </svg>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-2.5 pt-1">
