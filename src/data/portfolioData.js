@@ -100,13 +100,13 @@ export const portfolioData = {
       demoUrl: "https://erlandfatur.github.io/voidshare/",
       githubUrl: "https://github.com/Erlandfatur/voidshare",
       language: "JavaScript / WebRTC / PWA",
-      problem: "Kebutuhan transfer data antar-perangkat sering kali terkendala dua hal: privasi data (file harus transit di server pihak ketiga seperti Cloud Storage/WhatsApp) dan restriksi jaringan (lingkungan air-gapped, fasilitas medis/manufaktur terisolasi, atau Wi-Fi korporat dengan firewall ketat).",
-      solution: "VoidShare, aplikasi web berbasis client-side murni dengan dua modalitas transfer: Optical QR Streaming (mengubah payload data biner menjadi sekuens animasi QR code berkecepatan tinggi untuk transfer tanpa jaringan apa pun via kamera ke layar), dan WebRTC Direct Link (koneksi peer-to-peer terenkripsi device-to-device tanpa perantara server penyimpanan data / zero-knowledge storage).",
-      targetAudience: "Pegawai korporat di jaringan tertutup, teknisi lapangan di area isolasi/remote, dan user yang memprioritaskan kerahasiaan data (privacy-conscious).",
+      problem: "Cross-device data transfers in air-gapped high-security environments (banking, SCADA/manufacturing, military facilities) are crippled by two barriers: third-party data transit vulnerabilities (cloud drives, Slack, WhatsApp) and zero-connectivity network isolation (no internet, Bluetooth, or local Wi-Fi pairing allowed).",
+      solution: "Engineered VoidShare: a client-side, zero-knowledge data transfer protocol with dual-modality architecture: High-Speed Optical QR Streaming for 100% offline air-gapped network traversal (camera-to-screen), and Direct WebRTC DataChannels for serverless, zero-retention ephemeral device-to-device streaming.",
+      targetAudience: "Enterprise personnel in isolated corporate intranets, field technicians in air-gapped SCADA facilities, and privacy-centric users requiring absolute zero server-side data retention.",
       architecture: [
-        "Offline Shell (PWA): Service Workers & Cache Storage API enabling full application lifecycle with 0 kbps internet connectivity.",
-        "Air-Gap Optical Engine: Binary chunking protocol splitting files into indexed Base64 payloads rendered as cyclic 10-15 FPS QR video stream, decoded via Client Webcam Canvas.",
-        "P2P Signaling & Stream: PeerJS & WebRTC RTCDataChannel mesh with STUN/TURN NAT traversal for direct device-to-device memory buffer transmission with zero backend database storage."
+        "Offline Shell (PWA): Service Workers & Cache Storage API enabling full application lifecycle execution with 0 kbps internet connectivity.",
+        "Air-Gap Optical Engine: Binary chunking protocol partitioning files into indexed Base64 packets rendered as cyclic 10-15 FPS QR video streams, decoded via client Webcam Canvas.",
+        "P2P Signaling & Stream: PeerJS & WebRTC RTCDataChannel mesh with STUN/TURN NAT traversal for direct browser-to-browser memory buffer streaming with zero intermediate database persistence."
       ],
       boundedContexts: [
         {
@@ -126,17 +126,17 @@ export const portfolioData = {
         }
       ],
       systemFlow: [
-        { step: "01. Intake", detail: "User drops payload file into client memory. System computes file size, MIME type, and SHA-256 integrity checksum." },
-        { step: "02. Routing Logic", detail: "If Air-Gapped / Isolated Network: Triggers Optical Engine. If Connected Devices: Initializes WebRTC Signaling via PeerJS." },
-        { step: "03. Optical Stream", detail: "Chunks payload into [index/total]:payload packets. Drives dynamic Canvas cyclic QR animation at 10-15 FPS." },
-        { step: "04. WebRTC Stream", detail: "Generates ephemeral peer ID link. Handshakes RTCDataChannel, streams binary ArrayBuffer directly between memory buffers." },
-        { step: "05. Verification & Assembly", detail: "Receiver decodes chunks in real time, verifies against original checksum, and triggers browser automatic file download." }
+        { step: "01. Intake", detail: "User drops payload file into client memory. System computes byte size, MIME type, and SHA-256 integrity checksum." },
+        { step: "02. Routing Logic", detail: "Evaluates network context: triggers Air-Gapped Optical Engine for isolated environments, or initializes WebRTC Signaling via PeerJS for connected peers." },
+        { step: "03. Optical Stream", detail: "Partitions payload into [index/total]:payload packets, driving dynamic Canvas cyclic QR animation at 10-15 FPS." },
+        { step: "04. WebRTC Stream", detail: "Generates ephemeral peer ID link, handshakes RTCDataChannel, and streams binary ArrayBuffer directly between device memory heaps." },
+        { step: "05. Verification & Assembly", detail: "Receiver decodes chunks in real time, verifies reconstructed buffer against original SHA-256 checksum, and triggers browser automatic file download." }
       ],
       gwtaiSpecs: [
         {
           scenario: "Optical QR Stream Generation & Payload Constraint",
-          given: "User is in Optical Mode (Air-Gap) and has selected a file payload ≤ 2 MB",
-          when: "The user clicks 'Generate Stream'",
+          given: "User is in Optical Mode (Air-Gap) and selects a file payload ≤ 2 MB",
+          when: "User triggers the 'Generate Stream' action",
           then: "The system partitions the binary buffer into sequential indexed packets [index/total]:data",
           and: "Renders cyclic animated QR codes on Canvas at target 10–15 FPS for camera synchronization",
           ifCondition: "File size exceeds 2 MB, the system triggers a warning banner suggesting WebRTC Mode due to optical transmission latency limits."
@@ -144,21 +144,21 @@ export const portfolioData = {
         {
           scenario: "WebRTC Mid-Transfer Data Channel Disruption",
           given: "An active P2P data transfer session is underway with transfer progress at 60%",
-          when: "One peer loses network connectivity or the browser tab closes",
+          when: "One peer experiences network failure or closes the browser tab",
           then: "WebRTC triggers an ICEConnectionState transition to 'disconnected'",
-          and: "The receiver initiates a 15-second grace period showing an 'Awaiting peer reconnection' toast before terminating the session buffer."
+          and: "The receiver initiates a 15-second grace period displaying an 'Awaiting peer reconnection' state before terminating the session buffer."
         }
       ],
       tradeoffs: [
         {
-          title: "Serverless (GitHub Pages) vs. Dedicated Signaling Server",
-          decision: "Client-side architecture using public STUN servers",
-          impact: "Cut infrastructure cost to $0/month and guarantees zero data retention on servers. Accepted limitation: rare symmetric corporate NATs require TURN fallback."
+          title: "Serverless Static Architecture vs. Dedicated Signaling Server",
+          decision: "Client-side architecture hosted on GitHub Pages utilizing public STUN network",
+          impact: "Eliminated infrastructure operating expenses ($0 OpEx) and eliminated privacy liability via zero server retention. Trade-off: symmetric enterprise firewalls require TURN fallback."
         },
         {
           title: "Optical QR Frame Rate vs. Camera Shutter Synchronization",
-          decision: "Capped cyclic animation between 10-15 FPS instead of 60 FPS",
-          impact: "Prevents rolling shutter packet loss and frame skips on low-end smartphone cameras while maintaining ~50-100 kbps visual transmission throughput."
+          decision: "Capped cyclic animation between 10-15 FPS instead of uncapped 60 FPS",
+          impact: "Mitigates rolling shutter packet loss and frame drops across low-end mobile lenses while maintaining a stable ~50-100 kbps optical data throughput."
         }
       ],
       productMetrics: [
@@ -213,96 +213,96 @@ export const portfolioData = {
       demoUrl: "https://erlandfatur.github.io/Speech-Translator-enterprise/",
       githubUrl: "https://github.com/Erlandfatur/Speech-Translator-enterprise",
       language: "Python / WebSockets / GenAI / Chrome MV3",
-      problem: "Rapat bisnis lintas bahasa (misal: EN ↔ ID) via Zoom/Teams sering terhambat oleh live captioning satu arah yang kaku, terjemahan harfiah tanpa pemahaman konteks industri, serta latensi tinggi yang merusak dinamika percakapan.",
-      solution: "Pipeline Speech-to-Speech dua arah (bidirectional) berlatensi rendah dengan arsitektur orkestrasi model AI (Whisper → Llama/Gemini → Neural TTS), dilengkapi injeksi Custom Glossary (~370 istilah korporat) dan mekanisme fail-safe fallback.",
+      problem: "Cross-border enterprise meetings (e.g., EN ↔ ID/JP/ZH) across Zoom/Teams suffer from rigid one-way captioning, literal translations lacking industry jargon comprehension, and high latency (> 2.5s) that disrupts conversational turn-taking.",
+      solution: "Architected a low-latency, bidirectional Speech-to-Speech pipeline orchestrated across specialized AI models (Whisper → Llama/Gemini → Neural TTS), engineered with Custom Domain Glossary injection (~370 enterprise financial/tech terms) and graceful multi-tier failover.",
       distributionStrategy: [
-        { channel: "Chrome Extension MV3", detail: "Injeksi audio langsung via tabCapture tanpa perlu bot pihak ketiga masuk ke room meeting." },
-        { channel: "Desktop Client (BYOK)", detail: "Aplikasi mandiri berbasis Bring-Your-Own-Key untuk pengguna dengan privasi data ketat dan biaya infrastruktur nol bagi penyedia." }
+        { channel: "Chrome Extension MV3", detail: "Direct tabCapture audio injection eliminating third-party meeting bots that breach enterprise IT security policies." },
+        { channel: "Desktop Client (BYOK)", detail: "Standalone Bring-Your-Own-Key application for strict corporate compliance and zero infrastructure cost to the SaaS provider." }
       ],
       architecture: [
-        "VAD & Chunking: Silero VAD v5 (ONNX) dengan dynamic silence detection (≥ 0.6s) memotong konsumsi token hingga 40%.",
-        "STT & Transcription: Groq Whisper Large v3 Turbo (sub-detik inference) dengan fallback ke FasterWhisper local.",
-        "NMT & Custom Glossary: Groq Llama-3.3-70B diinjeksi ~370 enterprise glossaries dengan fallback ke Gemini Flash / Google Translate.",
-        "TTS & Dubbing: Edge-TTS Neural voice streaming dengan fallback ke Piper TTS local ONNX."
+        "VAD & Chunking: Silero VAD v5 (ONNX) with dynamic silence detection (≥ 0.6s) reducing cloud API token ingestion by 40%.",
+        "STT & Transcription: Groq Whisper Large v3 Turbo (sub-350ms inference) with automated fallback to local FasterWhisper.",
+        "NMT & Custom Glossary: Groq Llama-3.3-70B with system prompt injection of ~370 corporate terms, falling back to Gemini Flash / Google Translate.",
+        "TTS & Dubbing: Edge-TTS Neural streaming synthesis with graceful degradation to local Piper TTS ONNX engine."
       ],
       orchestrationPipeline: [
         {
           stage: "VAD & Chunking",
           primary: "Silero VAD v5 (ONNX)",
           fallback: "Fixed Time-Buffer",
-          tradeoff: "Mengurangi beban komputasi server dengan hanya memproses audio aktif (hemat cost API hingga 40%)."
+          tradeoff: "Reduces cloud server compute and network egress by only processing active speech (saves 40% token cost)."
         },
         {
-          stage: "STT (Transkripsi)",
+          stage: "STT (Transcription)",
           primary: "Groq Whisper Large v3 Turbo",
-          fallback: "FasterWhisper (Local)",
-          tradeoff: "Kecepatan inferensi sub-detik vs keandalan saat koneksi API eksternal mengalami throttling."
+          fallback: "FasterWhisper (Local ONNX)",
+          tradeoff: "Sub-350ms cloud inference speed vs. offline reliability during external API network throttling."
         },
         {
-          stage: "NMT (Terjemahan)",
+          stage: "NMT (Contextual Translation)",
           primary: "Groq Llama-3.3-70B",
           fallback: "Gemini Flash / Google Translate",
-          tradeoff: "Pemahaman konteks istilah bisnis lokal + injeksi prompt custom glossary (~370 korporat)."
+          tradeoff: "Contextual understanding of localized business jargon + system prompt injection of ~370 enterprise terms."
         },
         {
-          stage: "TTS (Dubbing)",
+          stage: "TTS (Neural Dubbing)",
           primary: "Edge-TTS (Neural)",
           fallback: "Piper TTS (Local ONNX)",
-          tradeoff: "Suara manusiawi alami tanpa biaya lisensi suara per karakter yang mahal."
+          tradeoff: "Human-like cadence and prosody without exorbitant per-character enterprise voice licensing fees."
         }
       ],
       systemFlow: [
-        { step: "01. Capture", detail: "Chrome Extension MV3 menangkap clean audio stream via tabCapture API / Virtual Cable tanpa bot pihak ketiga." },
-        { step: "02. VAD Detection", detail: "Silero VAD ONNX mendeteksi jeda silence ≥ 0.6 detik setelah buffer minimal 1.5 detik terpenuhi untuk flush payload." },
-        { step: "03. Groq STT", detail: "Audio buffer di-streaming ke Groq Whisper Large v3 Turbo untuk transkripsi akurat dalam < 350ms." },
-        { step: "04. Contextual NMT", detail: "Llama-3.3-70B menerjemahkan dengan injeksi ~370 technical/enterprise glossary terms." },
-        { step: "05. Neural Dubbing", detail: "Edge-TTS mensintesis audio natural suara manusiawi, di-stream balik via WebSocket dengan P95 latency < 1.5s." }
+        { step: "01. Capture", detail: "Chrome Extension MV3 captures raw clean audio via tabCapture API / Virtual Cable without requiring invasive meeting bots." },
+        { step: "02. VAD Detection", detail: "Silero VAD ONNX identifies silence pauses ≥ 0.6s after minimum 1.5s speech buffer is met, triggering immediate WebSocket payload flush." },
+        { step: "03. Groq STT", detail: "Audio buffer streams to Groq Whisper Large v3 Turbo for high-fidelity transcription within < 350ms." },
+        { step: "04. Contextual NMT", detail: "Llama-3.3-70B synthesizes translation with domain prompt injection of ~370 specialized corporate terms." },
+        { step: "05. Neural Dubbing", detail: "Edge-TTS generates natural audio stream, returned over WebSocket with P95 end-to-end latency < 1.5s." }
       ],
       gwtaiSpecs: [
         {
           scenario: "Dynamic Buffer Flush & Low-Latency Translation",
-          given: "Sesi terjemahan suara dua arah sedang aktif pada Chrome Extension",
-          when: "Silero VAD mendeteksi jeda keheningan (silence) ≥ 0.6 detik setelah buffer minimal 1.5 detik terpenuhi",
-          then: "Sistem langsung melakukan flush buffer audio ke WebSocket server",
-          and: "Server mengembalikan stream audio hasil dubbing dalam batas latensi target ≤ 1.2 detik",
-          ifCondition: "Latensi inferensi melebihi 2.0 detik akibat antrean jaringan, sistem otomatis mengaktifkan Subtitle Overlay sebagai fallback visual sebelum audio dubbing selesai di-render."
+          given: "Bidirectional voice translation session is active on Chrome Extension MV3",
+          when: "Silero VAD detects speech silence ≥ 0.6s after meeting minimum 1.5s speech buffer threshold",
+          then: "The system flushes the audio payload immediately to the WebSocket gateway",
+          and: "The server returns dubbing audio stream within target latency budget ≤ 1.2s",
+          ifCondition: "Inference queue latency exceeds 2.0s due to network congestion, the system automatically activates a Subtitle Overlay visual fallback before neural audio render completes."
         },
         {
           scenario: "Enterprise Token & Rate Limiting (Cost Protection)",
-          given: "User enterprise menggunakan koneksi WebSocket berbayar dengan sisa kredit 0",
-          when: "User mencoba menginisiasi koneksi handshake ke ws://localhost:8000/ws/translate?token=<jwt>",
-          then: "Server merespons dengan status penolakan WebSocket close code 4402 (Payment Required)",
-          and: "Antarmuka extension memunculkan modal: 'Monthly quota reached. Upgrade plan or switch to BYOK Desktop mode.'"
+          given: "An enterprise user accesses the premium WebSocket cluster with 0 remaining credits",
+          when: "User initiates WebSocket handshake to ws://gateway/ws/translate?token=<jwt>",
+          then: "The server rejects the handshake with WebSocket close code 4402 (Payment Required)",
+          and: "The client UI renders an upgrade modal: 'Monthly quota reached. Upgrade plan or switch to BYOK Desktop mode.'"
         }
       ],
       tradeoffs: [
         {
           title: "API Orchestration vs. Self-Hosted Heavy Models",
-          decision: "Menggunakan ultra-fast API (Groq Llama-3.3 & Whisper) sebagai tier utama, model lokal hanya sebagai emergency fallback",
-          impact: "Mencegah pembengkakan biaya GPU cloud hingga ribuan dolar/bulan, mempertahankan margin keuntungan SaaS sambil tetap menjaga uptime 99.9%."
+          decision: "Leveraged ultra-fast cloud APIs (Groq Llama-3.3 & Whisper) as primary tier; local models strictly as disaster recovery fallback",
+          impact: "Prevented runaway cloud GPU expenses ($000s/mo), preserved SaaS gross margins, and maintained a 99.9% uptime SLA."
         },
         {
           title: "Chrome Extension tabCapture vs. Virtual Meeting Bot",
-          decision: "Chrome Extension MV3 via audio capture langsung di browser pengguna",
-          impact: "Bypass proteksi IT security enterprise yang biasanya memblokir bot eksternal (Otter/Fireflies) untuk join meeting room privat."
+          decision: "Engineered Chrome MV3 client-side tab capture over headless meeting bots (Otter/Fireflies)",
+          impact: "Eliminated enterprise IT security friction—allowing users to translate internal confidential meetings without requiring workspace admin bot approvals."
         }
       ],
       productMetrics: [
-        { label: "End-to-End Latency", value: "< 1.5s", desc: "P95 latensi speech-to-speech terjaga natural tanpa awkward silence" },
-        { label: "Domain Accuracy", value: "98.6%", desc: "Glossary benchmark match untuk istilah teknis bisnis & perbankan" },
-        { label: "Cost-per-Meeting-Hour", value: "< $0.15/hr", desc: "Biaya komputasi efisien via dynamic VAD silence flushing" }
+        { label: "End-to-End Latency", value: "< 1.5s", desc: "P95 speech-to-speech round-trip maintaining natural conversational turn-taking" },
+        { label: "Domain Accuracy", value: "98.6%", desc: "Glossary benchmark match rate across technical & financial enterprise terminology" },
+        { label: "Cost-per-Meeting-Hour", value: "< $0.15/hr", desc: "Average compute spend per meeting hour achieved via dynamic VAD silence flushing" }
       ],
       starFraming: {
-        situation: "Trilemma real-time AI: latensi, biaya API GPU yang membakar margin, dan akurasi konteks terminologi bisnis.",
-        task: "Mendesain arsitektur produk pragmatis yang scalable, enterprise-ready, dan tidak membutuhkan izin admin IT meeting room.",
-        action: "Mengimplementasikan dynamic silence VAD (hemat 40% cost token), fail-safe fallback multi-provider bertingkat (Groq, Gemini, Edge-TTS, Piper), serta split tier Enterprise Cloud vs Desktop BYOK.",
-        result: "Mencapai P95 latency < 1.5s, akurasi glossary 98.6%, serta biaya running < $0.15/meeting hour."
+        situation: "Real-time voice AI trilemma: minimizing latency, preventing margin-eroding cloud GPU costs, and ensuring strict enterprise contextual precision.",
+        task: "Architect a scalable, enterprise-grade B2B translation system that complies with corporate IT security without requiring meeting room admin bot approvals.",
+        action: "Engineered dynamic silence VAD flushing (cut token consumption by 40%), built a multi-tier failover mesh (Groq → Gemini → Local ONNX), and established a dual-tier monetization model (Enterprise Cloud Credits vs. Free BYOK Desktop).",
+        result: "Delivered sub-1.5s P95 voice-to-voice latency, 98.6% technical glossary benchmark accuracy, and compressed compute costs below $0.15/meeting hour."
       },
       keyPoints: [
-        "Mendesain arsitektur orkestrasi multi-model AI (Whisper, Llama 3.3, Edge-TTS) dengan zero-downtime fallback ke model lokal.",
-        "Mengurangi pengeluaran API hingga 40% melalui dynamic speech buffer flushing berbasis Silero VAD.",
-        "Menembus restriksi IT security enterprise menggunakan arsitektur Chrome Extension MV3 tanpa meeting bot.",
-        "Menyusun strategi monetisasi fleksibel: Enterprise Credit System via WebSocket JWT vs Free BYOK Desktop app."
+        "Architected multi-model AI orchestration pipeline (Whisper, Llama 3.3, Edge-TTS) with zero-downtime local failover.",
+        "Compressed cloud API egress expenses by 40% through dynamic speech silence buffer flushing with Silero VAD.",
+        "Overcame enterprise IT security gatekeepers by engineering a Chrome Extension MV3 client-side capture architecture.",
+        "Structured a dual-tier product offering: Enterprise Metered Token Credits vs. Self-hosted BYOK Desktop Client."
       ],
       techStack: ["Python", "Groq Whisper v3", "Llama 3.3 70B", "Edge-TTS", "WebSockets", "Silero VAD", "Chrome MV3"],
     },

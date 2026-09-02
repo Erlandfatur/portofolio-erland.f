@@ -387,7 +387,7 @@ export function ProjectDetailModal({ project, onClose }) {
                 <table className="w-full text-left text-xs border-collapse font-sans">
                   <thead>
                     <tr className="bg-[#121316] text-[#F3F4F6] font-mono text-[11px]">
-                      <th className="p-3 font-bold border-r border-[#2A2E37]">Tahapan Pipeline</th>
+                      <th className="p-3 font-bold border-r border-[#2A2E37]">Pipeline Stage</th>
                       <th className="p-3 font-bold border-r border-[#2A2E37]">Primary Provider</th>
                       <th className="p-3 font-bold border-r border-[#2A2E37]">Fallback Engine</th>
                       <th className="p-3 font-bold">Product Decision / Trade-off</th>
