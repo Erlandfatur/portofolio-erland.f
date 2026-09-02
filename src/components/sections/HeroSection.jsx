@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { ArrowUpRight, Download, Sparkles } from 'lucide-react';
 import { portfolioData } from '../../data/portfolioData';
 import { avatarBase64 } from '../../assets/avatarData';
@@ -13,7 +13,7 @@ export function HeroSection({ activeProjectIdx, setActiveProjectIdx, onScrollTo 
       <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         
         {/* Left Col: Main Headline & Core Narrative (7 cols) */}
-        <div className="lg:col-span-7 bg-[#FFFFFF]/95 backdrop-blur-xl border border-[#D1D5DB] p-6 sm:p-12 rounded-[2.5rem] shadow-xl shadow-slate-300/40 space-y-6">
+        <div className="lg:col-span-7 bg-[#FFFFFF] border border-[#D1D5DB] p-6 sm:p-12 rounded-[2.5rem] shadow-xl shadow-slate-300/40 space-y-6">
           <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3 text-xs font-mono text-[#555C68]">
             <span className="font-bold text-[#FF5A00]">[01 / DISCOVERY]</span>
             <span>JAKARTA, ID • ASSOCIATE PRODUCT MANAGER</span>
@@ -70,7 +70,7 @@ export function HeroSection({ activeProjectIdx, setActiveProjectIdx, onScrollTo 
 
         {/* Right Col: Live Telemetry & Profile Card (5 cols) */}
         <div className="lg:col-span-5 flex flex-col gap-4">
-          <div className="bg-[#FFFFFF]/90 backdrop-blur-xl border border-[#D1D5DB] p-6 sm:p-8 rounded-[2.5rem] shadow-xl space-y-5">
+          <div className="bg-[#FFFFFF] border border-[#D1D5DB] p-6 sm:p-8 rounded-[2.5rem] shadow-xl space-y-5">
             <div className="flex items-center gap-4 border-b border-[#F3F4F6] pb-4">
               <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-[#D1D5DB] flex-shrink-0 bg-[#121316]">
                 <img src={avatarBase64} alt="Erland" className="w-full h-full object-cover" />
@@ -114,7 +114,7 @@ export function HeroSection({ activeProjectIdx, setActiveProjectIdx, onScrollTo 
       {/* Full-Width Telemetry Metric Cards */}
       <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-4">
         {personal.stats.map((stat, i) => (
-          <div key={i} className="bg-[#FFFFFF]/90 border border-[#D1D5DB] p-5 rounded-2xl shadow-sm">
+          <div key={i} className="bg-[#FFFFFF] border border-[#D1D5DB] p-5 rounded-2xl shadow-sm">
             <div className="text-2xl sm:text-3xl font-extrabold text-[#121316] font-mono">
               {stat.value}
             </div>

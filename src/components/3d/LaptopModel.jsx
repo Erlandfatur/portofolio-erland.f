@@ -1,4 +1,4 @@
-﻿import React, { useRef, useMemo, useEffect } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { portfolioData } from '../../data/portfolioData';
@@ -153,19 +153,20 @@ export function LaptopModel({ activeProjectIndex = 0 }) {
 
     if (!laptopGroupRef.current) return;
 
-    const floatY = Math.sin(t * 1.3) * 0.14;
-    const floatRotZ = Math.sin(t * 0.7) * 0.02;
+    const floatY = Math.sin(t * 1.3) * 0.08;
+    const floatRotZ = Math.sin(t * 0.7) * 0.015;
 
+    // Shifted slightly rightwards (+0.4) on wide screens to balance layout and stay clear of left narrative
     targetPosition.current.set(
-      mouse.x * 0.35,
-      -0.2 + floatY + mouse.y * 0.2,
+      0.35 + mouse.x * 0.2,
+      -0.25 + floatY + mouse.y * 0.12,
       0
     );
 
     targetRotation.current.set(
-      0.22 - mouse.y * 0.2,
-      -0.48 + mouse.x * 0.3,
-      0.08 + floatRotZ
+      0.18 - mouse.y * 0.12,
+      -0.45 + mouse.x * 0.2,
+      0.06 + floatRotZ
     );
 
     laptopGroupRef.current.position.lerp(targetPosition.current, dt * 4.5);

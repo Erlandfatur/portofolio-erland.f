@@ -1,4 +1,4 @@
-﻿import React, { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import * as THREE from 'three';
 
 export function MonolithRocks() {
@@ -36,9 +36,9 @@ export function MonolithRocks() {
         >
           <dodecahedronGeometry args={[1, 1]} />
           <meshStandardMaterial
-            color="#2A2F38"
-            roughness={0.92}
-            metalness={0.15}
+            color="#B8C0CC"
+            roughness={0.88}
+            metalness={0.1}
             flatShading={true}
           />
         </mesh>
