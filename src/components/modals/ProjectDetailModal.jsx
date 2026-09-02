@@ -126,6 +126,19 @@ export function ProjectDetailModal({ project, onClose }) {
             </div>
           )}
 
+          {/* Compliance & Ethics Safeguard Banner (If Available) */}
+          {project.complianceSafeguard && (
+            <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-3">
+              <span className="text-[11px] font-mono font-bold text-emerald-800 uppercase bg-emerald-100 px-3 py-1 rounded-full whitespace-nowrap self-start sm:self-auto flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
+                COMPLIANCE SAFEGUARD
+              </span>
+              <p className="text-xs text-emerald-900 font-sans leading-relaxed">
+                {project.complianceSafeguard}
+              </p>
+            </div>
+          )}
+
           {/* TPM & System Bounded Contexts (If Available) */}
           {project.boundedContexts && (
             <div className="space-y-3 font-mono">
@@ -157,10 +170,18 @@ export function ProjectDetailModal({ project, onClose }) {
             <div className="bg-[#121316] text-[#F3F4F6] p-6 rounded-2xl space-y-4 font-mono">
               <div className="flex items-center justify-between border-b border-[#2A2E37] pb-3">
                 <span className="text-xs font-bold text-[#FF5A00] tracking-wider uppercase">
-                  {project.id === 'speech-translator' ? '⚡ REAL-TIME AI ORCHESTRATION PIPELINE FLOW:' : '⚡ BPMN 2.0 PROTOCOL & SYSTEM LOGIC FLOW:'}
+                  {project.id === 'speech-translator'
+                    ? '⚡ REAL-TIME AI ORCHESTRATION PIPELINE FLOW:'
+                    : project.id === 'upwork-agent'
+                    ? '⚡ TWO-TIER DECISION FUNNEL & GUARDRAIL ARCHITECTURE:'
+                    : '⚡ BPMN 2.0 PROTOCOL & SYSTEM LOGIC FLOW:'}
                 </span>
                 <span className="text-[10px] text-[#9CA3AF]">
-                  {project.id === 'speech-translator' ? 'BIDIRECTIONAL AUDIO PIPELINE' : 'DUAL-MODALITY PROTOCOL'}
+                  {project.id === 'speech-translator'
+                    ? 'BIDIRECTIONAL AUDIO PIPELINE'
+                    : project.id === 'upwork-agent'
+                    ? 'COST-PER-MATCH FUNNEL & HITL'
+                    : 'DUAL-MODALITY PROTOCOL'}
                 </span>
               </div>
 
@@ -249,7 +270,7 @@ export function ProjectDetailModal({ project, onClose }) {
                       <text x="820" y="162" textAnchor="middle" fill="#F3F4F6" fontSize="10" fontWeight="bold">File Assembled</text>
                       <text x="820" y="174" textAnchor="middle" fill="#9CA3AF" fontSize="8">Checksum Verified</text>
                     </svg>
-                  ) : (
+                  ) : project.id === 'speech-translator' ? (
                     /* Speech Translator Enterprise: Real-Time Audio AI Orchestration Pipeline Diagram */
                     <svg viewBox="0 0 880 260" className="w-full h-auto text-xs select-none">
                       <defs>
@@ -317,7 +338,81 @@ export function ProjectDetailModal({ project, onClose }) {
                       <text x="830" y="104" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold">P95 &lt; 1.5s</text>
                       <text x="830" y="116" textAnchor="middle" fill="#6EE7B7" fontSize="8">Live Dubbed</text>
                     </svg>
-                  )}
+                  ) : project.id === 'upwork-agent' ? (
+                    /* Autonomous Freelance Hunt Agent: Two-Tier Decision Funnel & Anti-Hallucination Gate */
+                    <svg viewBox="0 0 880 260" className="w-full h-auto text-xs select-none">
+                      <defs>
+                        <marker id="arrow-emerald" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 1 L 10 5 L 0 9 z" fill="#10B981" />
+                        </marker>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 1 L 10 5 L 0 9 z" fill="#EF4444" />
+                        </marker>
+                        <linearGradient id="agentBoxGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="#1C2321" />
+                          <stop offset="100%" stopColor="#111614" />
+                        </linearGradient>
+                      </defs>
+
+                      {/* Stage 1: Ingestion */}
+                      <circle cx="50" cy="115" r="18" fill="#10B981" fillOpacity="0.2" stroke="#10B981" strokeWidth="2.5" />
+                      <circle cx="50" cy="115" r="8" fill="#10B981" />
+                      <text x="50" y="148" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontWeight="bold">Job RSS Feed</text>
+
+                      <line x1="70" y1="115" x2="115" y2="115" stroke="#10B981" strokeWidth="2" markerEnd="url(#arrow-emerald)" />
+
+                      {/* Tier 1: Deterministic Filter */}
+                      <rect x="125" y="80" width="160" height="70" rx="8" fill="url(#agentBoxGrad)" stroke="#10B981" strokeWidth="1.5" />
+                      <text x="205" y="103" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Tier 1: Rules Engine</text>
+                      <text x="205" y="119" textAnchor="middle" fill="#34D399" fontSize="9">Regex &amp; Budget Heuristics</text>
+                      <text x="205" y="133" textAnchor="middle" fill="#9CA3AF" fontSize="8">&lt; 5ms ($0 API Cost)</text>
+
+                      {/* Discard Branch Tier 1 */}
+                      <path d="M 205 80 L 205 38 L 245 38" fill="none" stroke="#EF4444" strokeWidth="1.5" strokeDasharray="3 3" markerEnd="url(#arrow-red)" />
+                      <rect x="250" y="23" width="115" height="30" rx="6" fill="#201015" stroke="#EF4444" strokeWidth="1" />
+                      <text x="307" y="38" textAnchor="middle" fill="#FCA5A5" fontSize="8" fontWeight="bold">Discard ~70% Junk</text>
+                      <text x="307" y="48" textAnchor="middle" fill="#9CA3AF" fontSize="7">Unverified / Low Rate</text>
+
+                      {/* Pass to Tier 2 */}
+                      <line x1="285" y1="115" x2="335" y2="115" stroke="#10B981" strokeWidth="2" markerEnd="url(#arrow-emerald)" />
+                      <text x="310" y="108" textAnchor="middle" fill="#A7F3D0" fontSize="8" fontWeight="bold">Pass</text>
+
+                      {/* Tier 2: Semantic Matching Agent */}
+                      <rect x="345" y="80" width="165" height="70" rx="8" fill="url(#agentBoxGrad)" stroke="#10B981" strokeWidth="1.5" />
+                      <text x="427" y="103" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Tier 2: Semantic Fit</text>
+                      <text x="427" y="119" textAnchor="middle" fill="#34D399" fontSize="9">Groq Llama 3.3 (300-750 tps)</text>
+                      <text x="427" y="133" textAnchor="middle" fill="#9CA3AF" fontSize="8">Relevance Score Threshold</text>
+
+                      {/* Discard Branch Tier 2 */}
+                      <path d="M 427 80 L 427 38 L 465 38" fill="none" stroke="#EF4444" strokeWidth="1.5" strokeDasharray="3 3" markerEnd="url(#arrow-red)" />
+                      <rect x="470" y="23" width="105" height="30" rx="6" fill="#201015" stroke="#EF4444" strokeWidth="1" />
+                      <text x="522" y="38" textAnchor="middle" fill="#FCA5A5" fontSize="8" fontWeight="bold">Score &lt; 70%</text>
+                      <text x="522" y="48" textAnchor="middle" fill="#9CA3AF" fontSize="7">Discard Irrelevant</text>
+
+                      {/* Pass to Tier 3 */}
+                      <line x1="510" y1="115" x2="560" y2="115" stroke="#10B981" strokeWidth="2" markerEnd="url(#arrow-emerald)" />
+                      <text x="535" y="108" textAnchor="middle" fill="#A7F3D0" fontSize="8" fontWeight="bold">Score ≥ 70%</text>
+
+                      {/* Tier 3: Ground-Truth Generator & Anti-Slop Gate */}
+                      <rect x="570" y="80" width="170" height="70" rx="8" fill="url(#agentBoxGrad)" stroke="#10B981" strokeWidth="1.5" />
+                      <text x="655" y="103" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Tier 3: Ground-Truth</text>
+                      <text x="655" y="119" textAnchor="middle" fill="#FBBF24" fontSize="9">profile.yaml Anti-Slop Gate</text>
+                      <text x="655" y="133" textAnchor="middle" fill="#9CA3AF" fontSize="8">Zero Hallucination Validation</text>
+
+                      <line x1="740" y1="115" x2="790" y2="115" stroke="#10B981" strokeWidth="2" markerEnd="url(#arrow-emerald)" />
+
+                      {/* Final End Event: Telegram Copilot Alert */}
+                      <circle cx="825" cy="115" r="20" fill="#10B981" fillOpacity="0.2" stroke="#10B981" strokeWidth="3" />
+                      <circle cx="825" cy="115" r="12" fill="#10B981" />
+                      <text x="825" y="148" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold">Telegram &lt; 60s</text>
+                      <text x="825" y="160" textAnchor="middle" fill="#6EE7B7" fontSize="8">1-Click Copilot</text>
+
+                      {/* Bottom Compliance Box */}
+                      <rect x="125" y="195" width="615" height="42" rx="6" fill="#121815" stroke="#10B981" strokeWidth="1" strokeDasharray="3 3" />
+                      <text x="432" y="213" textAnchor="middle" fill="#34D399" fontSize="9" fontWeight="bold">COMPLIANCE SAFEGUARD: ZERO AUTO-BIDDING POLICY (HUMAN-IN-THE-LOOP)</text>
+                      <text x="432" y="226" textAnchor="middle" fill="#9CA3AF" fontSize="8">100% Upwork TOS Compliant • Human final review required before submission</text>
+                    </svg>
+                  ) : null}
                 </div>
               </div>
 
@@ -440,7 +535,9 @@ export function ProjectDetailModal({ project, onClose }) {
             <div className="space-y-3 font-mono">
               <span className="text-xs font-bold text-[#121316] uppercase block flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-purple-600"></span>
-                MULTI-MODEL AI ORCHESTRATION PIPELINE & FAIL-SAFE DESIGN:
+                {project.id === 'upwork-agent'
+                  ? 'TWO-TIER DECISION FUNNEL & MULTI-MODEL RESOURCE ALLOCATION:'
+                  : 'MULTI-MODEL AI ORCHESTRATION PIPELINE & FAIL-SAFE DESIGN:'}
               </span>
               <div className="overflow-x-auto rounded-xl border border-[#E5E7EB]">
                 <table className="w-full text-left text-xs border-collapse font-sans">

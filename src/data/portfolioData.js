@@ -334,29 +334,100 @@ export const portfolioData = {
     },
     {
       id: "upwork-agent",
-      title: "Upwork Autonomous Freelance Agent",
-      subtitle: "AI Lead Discovery & Bidding Automation Pipeline",
-      role: "Lead Developer & System Designer",
+      title: "Autonomous Freelance Hunt Agent",
+      subtitle: "Autonomous Freelance Hunt Agent & Proposal Copilot",
+      role: "Technical Product Manager & Lead AI System Architect",
       category: "ai",
-      status: "AI Automation",
+      domain: "Agentic AI, Autonomous Workflow Automation, MarTech / Lead Generation",
+      status: "Production Agent",
       hasLivePreview: false,
       githubIoUrl: null,
       demoUrl: "https://github.com/Erlandfatur/upwork-freelance-agent",
       githubUrl: "https://github.com/Erlandfatur/upwork-freelance-agent",
-      language: "Python",
-      problem: "Freelancers waste 10+ hours a week manually searching through noisy job boards with low conversion rates.",
-      solution: "Engineered an autonomous AI agent that filters job feeds by client budget, reputation, and tech stack, then generates high-conversion customized proposals.",
+      language: "Python 3.11+ / Groq / MongoDB / Docker",
+      problem: "Technical freelancers lose 15–20 hours weekly sifting through noisy job board feeds, evaluating high-risk clients (unverified payment, sub-30% hire rates), and authoring tailored technical proposals—frequently forfeiting high-conversion early-bidder windows.",
+      solution: "Engineered an autonomous 24/7 Human-in-the-Loop agent that continuously ingests job feeds, computes semantic relevance scores, and generates tailored, anti-hallucinated technical proposals with 1-click interactive Telegram dispatch.",
+      complianceSafeguard: "Architected with strict 100% platform Terms of Service (TOS) compliance by strictly prohibiting automated proposal submissions (zero auto-bidding). The agent acts strictly as an intelligent curator and drafting copilot.",
       architecture: [
-        "Headless RSS and API crawler fetching new postings within 60 seconds of publication.",
-        "LLM scoring system calculating match percentage against Erland's verified skills.",
-        "Automated markdown proposal generation with tailored portfolio evidence injection."
+        "Tier 1 Deterministic Engine: Pure Python regex heuristics discarding ~70% low-quality jobs with zero API token consumption (< 5ms).",
+        "Tier 2 Semantic Matching Agent: Groq Llama-3.1-8B/3.3-70B evaluating portfolio-to-job compatibility scores at 300–750 tokens/sec.",
+        "Tier 3 Ground-Truth Proposal Generator: Structured 4-stage technical pitch generation (Hook → Solution → Proof → CTA) strictly bound to verified portfolio data in profile.yaml.",
+        "Event-Driven Dispatcher: Async Telegram Bot API alerting users in < 60s from job publication with 1-click copy code blocks and interactive CTAs."
       ],
+      orchestrationPipeline: [
+        {
+          stage: "Tier 1: Risk & Budget Filter",
+          primary: "Pure Python / Regex Heuristics",
+          fallback: "Zero-Cost Discard",
+          tradeoff: "< 5ms execution ($0 cost). Discards ~70% of spam/low-budget postings before consuming LLM token budgets."
+        },
+        {
+          stage: "Tier 2: Semantic Fit Scoring",
+          primary: "Groq Llama-3.1-8B / 3.3-70B",
+          fallback: "Score < 70% Discard",
+          tradeoff: "High-speed inference (~300–750 tps) evaluating deep portfolio relevance against client scope in real time."
+        },
+        {
+          stage: "Tier 3: Ground-Truth Generation",
+          primary: "Groq Llama-3.3-70B Versatile",
+          fallback: "Re-prompt with Temp Penalty 0.2",
+          tradeoff: "Generates structured 4-part pitch (Hook → Solution → Proof → CTA) with strict profile.yaml anti-hallucination verification."
+        }
+      ],
+      systemFlow: [
+        { step: "01. Intake", detail: "Continuous RSS / Webhook polling captures newly published freelance opportunities within seconds of publication." },
+        { step: "02. Tier 1 Heuristics", detail: "Deterministic regex engine filters payment status, client hire rate (> 30%), minimum budget, and tech stack tags." },
+        { step: "03. Tier 2 Semantic Eval", detail: "Groq Llama assesses scope complexity and computes semantic compatibility score (threshold ≥ 70%)." },
+        { step: "04. Ground-Truth Draft", detail: "Llama-3.3-70B drafts proposal with strict validation against verified profile.yaml portfolio metrics." },
+        { step: "05. Telegram Dispatch", detail: "Dispatches actionable alert to user Telegram within < 60s with 1-click copy blocks and interactive action buttons." }
+      ],
+      gwtaiSpecs: [
+        {
+          scenario: "Anti-Hallucination Portfolio Injection (Anti-Slop Gate)",
+          given: "A job posting passes Tier 2 evaluation with a semantic compatibility score ≥ 70%",
+          when: "The generator drafts a tailored technical proposal",
+          then: "The system injects verified portfolio links, technical metrics, and tech stacks exclusively from profile.yaml",
+          and: "An anti-hallucination validator confirms 100% exact match between drafted claims and profile credentials",
+          ifCondition: "The model outputs unverified project claims or hallucinates unearned metrics, the generator aborts the draft and re-prompts with a temperature penalty lowered to 0.2."
+        },
+        {
+          scenario: "Sub-60s Alert Dispatching via Telegram",
+          given: "A proposal draft is successfully generated and verified against profile ground truth",
+          when: "The dispatcher transmits payload to the Telegram Bot API",
+          then: "The alert delivers to the user's channel in total elapsed time < 60 seconds from original RSS publication",
+          and: "The Telegram message renders 1-click copy code blocks alongside interactive buttons: [Open Job Link], [Regenerate Pitch], and [Skip]."
+        }
+      ],
+      tradeoffs: [
+        {
+          title: "Autonomous Bidding vs. Human-in-the-Loop",
+          decision: "Strictly limited automation to curation, drafting, and screening assistance; manual final submission retained",
+          impact: "Eliminated platform account suspension risks and prevented brand damage from bot misinterpretations while cutting manual workload by 80%."
+        },
+        {
+          title: "Storage Deduplication Lifecycle (TTL)",
+          decision: "Configured MongoDB 7-day Time-To-Live (TTL) automatic document expiration indices",
+          impact: "Maintains cloud database storage permanently within free-tier limits without recurring maintenance overhead or stale feed clutter."
+        }
+      ],
+      productMetrics: [
+        { label: "Time-to-Pitch Latency", value: "≤ 2 mins", desc: "Reduced from 25–40 mins manual drafting to 1-min review + 1-click submit" },
+        { label: "Token Cost Efficiency", value: "0 Tokens", desc: "Zero LLM tokens spent on unqualified jobs via Tier 1 deterministic discard" },
+        { label: "Dispatch Velocity", value: "< 60s", desc: "Total elapsed time from RSS publication to Telegram copilot alert" }
+      ],
+      starFraming: {
+        situation: "Technical freelancers waste 40% of working hours manually sifting through low-quality job board postings and writing repetitive proposals, consistently missing high-conversion early-bidder windows.",
+        task: "Architect a scalable, cost-efficient lead discovery and proposal engine with 100% platform TOS compliance and zero LLM hallucinations.",
+        action: "Designed a two-tier decision funnel: zero-cost deterministic regex heuristics filtering ~70% junk jobs, paired with a Groq Llama-3.3 semantic scoring agent and a strict profile.yaml anti-hallucination guardrail gate.",
+        result: "Compressed proposal turnaround from 30+ minutes to under 2 minutes, maintained 100% platform compliance through Human-in-the-Loop design, and cut candidate screening compute costs to zero."
+      },
       keyPoints: [
-        "Engineered automated scraping and filtering pipeline prioritizing high-ticket client job posts.",
-        "Integrated LLM reasoning to evaluate client budget, project scope, and generate structured bid drafts.",
-        "Built telemetry dashboard monitoring proposal conversion metrics and client response rates.",
+        "Architected a cost-optimized two-tier decision funnel filtering 70% of low-quality leads at $0 compute cost.",
+        "Built an anti-hallucination guardrail gate ensuring 100% factual accuracy in AI-generated client proposals.",
+        "Enforced strict platform compliance via Human-in-the-Loop design, rejecting risky automated bidding bots.",
+        "Engineered sub-60s event-driven notification dispatch via Telegram Bot API with 1-click interactive actions."
       ],
-      techStack: ["Python", "AI Agent", "LLM Reasoning", "Automation", "Workflow Pipeline"],
+      techStack: ["Python 3.11+", "Groq (Llama 3.3 70B)", "MongoDB", "Telegram Bot API", "Docker", "Regex Engine"],
     },
     {
       id: "tele-badmin",
