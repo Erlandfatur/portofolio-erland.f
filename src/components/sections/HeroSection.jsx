@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { ArrowUpRight, Download, Sparkles } from 'lucide-react';
 import { portfolioData } from '../../data/portfolioData';
+import { avatarBase64 } from '../../assets/avatarData';
 
 export function HeroSection({ activeProjectIdx, setActiveProjectIdx, onScrollTo }) {
   const { personal, projects } = portfolioData;
@@ -72,7 +73,7 @@ export function HeroSection({ activeProjectIdx, setActiveProjectIdx, onScrollTo 
           <div className="bg-[#FFFFFF]/90 backdrop-blur-xl border border-[#D1D5DB] p-6 sm:p-8 rounded-[2.5rem] shadow-xl space-y-5">
             <div className="flex items-center gap-4 border-b border-[#F3F4F6] pb-4">
               <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-[#D1D5DB] flex-shrink-0 bg-[#121316]">
-                <img src="/erland_avatar_3d.jpg" alt="Erland" className="w-full h-full object-cover" />
+                <img src={avatarBase64} alt="Erland" className="w-full h-full object-cover" />
               </div>
               <div>
                 <span className="text-[10px] font-mono font-bold text-[#FF5A00] uppercase block">

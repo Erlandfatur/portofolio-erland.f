@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { Volume2, VolumeX, ArrowUpRight } from 'lucide-react';
 import { portfolioData } from '../../data/portfolioData';
+import { avatarBase64 } from '../../assets/avatarData';
 
 export function Navbar({ isMuted, isPlayingBGM, onToggleBGM, onScrollTo }) {
   const { personal } = portfolioData;
@@ -13,7 +14,7 @@ export function Navbar({ isMuted, isPlayingBGM, onToggleBGM, onScrollTo }) {
         <div className="flex items-center gap-2.5 bg-[#FFFFFF] border border-[#D1D5DB] rounded-full p-1.5 pr-4 shadow-sm">
           <div className="w-8 h-8 rounded-full overflow-hidden border border-[#D1D5DB] flex-shrink-0 bg-[#121316] flex items-center justify-center font-bold text-white text-xs font-mono">
             <img
-              src="/erland_avatar_3d.jpg"
+              src={avatarBase64}
               alt={personal.name}
               className="w-full h-full object-cover"
             />
@@ -28,12 +29,11 @@ export function Navbar({ isMuted, isPlayingBGM, onToggleBGM, onScrollTo }) {
           </div>
         </div>
 
-        {/* Center: TE-Style Modular Tabs */}
+        {/* Center: Clean TE-Style Modular Tabs */}
         <nav className="hidden lg:flex items-center gap-1 bg-[#FFFFFF] border border-[#D1D5DB] p-1 rounded-full shadow-sm">
           {[
             { id: 'hero', label: 'INFO' },
             { id: 'projects', label: 'PROJECTS' },
-            { id: 'rice-sandbox', label: 'RICE SIMULATOR' },
             { id: 'experience', label: 'EXPERIENCE' },
             { id: 'skills', label: 'SPECS' },
             { id: 'certs', label: 'CERTS' },
@@ -42,7 +42,7 @@ export function Navbar({ isMuted, isPlayingBGM, onToggleBGM, onScrollTo }) {
             <button
               key={tab.id}
               onClick={() => onScrollTo(`sec-${tab.id}`)}
-              className="px-4 py-1.5 rounded-full text-xs font-mono font-bold text-[#555C68] hover:text-[#121316] hover:bg-[#F3F4F6] transition-all cursor-pointer"
+              className="px-5 py-1.5 rounded-full text-xs font-mono font-bold text-[#555C68] hover:text-[#121316] hover:bg-[#F3F4F6] transition-all cursor-pointer"
             >
               {tab.label}
             </button>
