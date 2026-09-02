@@ -19,7 +19,7 @@ export function HeroSection({ activeProjectIdx, setActiveProjectIdx, onScrollTo 
             <span>JAKARTA, ID • ASSOCIATE PRODUCT MANAGER</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl xl:text-6xl font-extrabold text-[#121316] leading-[1.05] font-heading tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-extrabold text-[#121316] leading-[1.18] sm:leading-[1.12] font-heading tracking-tight break-words">
             BUILDING DIGITAL <span className="text-[#FF5A00]">PRODUCTS</span> THAT SCALE.
           </h1>
 
@@ -88,22 +88,22 @@ export function HeroSection({ activeProjectIdx, setActiveProjectIdx, onScrollTo 
               </div>
             </div>
 
-            <div className="space-y-2 text-xs font-mono">
-              <div className="flex justify-between py-1 border-b border-[#F3F4F6]">
+            <div className="space-y-2.5 text-xs font-mono">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between py-1.5 border-b border-[#F3F4F6] gap-1">
                 <span className="text-[#6B7280]">EDUCATION</span>
-                <span className="font-bold text-[#121316]">Politeknik Negeri Jakarta</span>
+                <span className="font-bold text-[#121316] sm:text-right">Politeknik Negeri Jakarta</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F3F4F6]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between py-1.5 border-b border-[#F3F4F6] gap-1">
                 <span className="text-[#6B7280]">CUMULATIVE GPA</span>
-                <span className="font-bold text-[#FF5A00]">3.67 / 4.00 (Honors)</span>
+                <span className="font-bold text-[#FF5A00] sm:text-right">3.67 / 4.00 (Honors)</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F3F4F6]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between py-1.5 border-b border-[#F3F4F6] gap-1">
                 <span className="text-[#6B7280]">CORE SPECIALIZATION</span>
-                <span className="font-bold text-[#121316]">Technical PM & Systems</span>
+                <span className="font-bold text-[#121316] sm:text-right">Technical PM & Systems</span>
               </div>
-              <div className="flex justify-between py-1">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between py-1.5 gap-1">
                 <span className="text-[#6B7280]">LOCATION</span>
-                <span className="font-bold text-[#121316]">Jakarta, Indonesia</span>
+                <span className="font-bold text-[#121316] sm:text-right">Jakarta, Indonesia</span>
               </div>
             </div>
           </div>

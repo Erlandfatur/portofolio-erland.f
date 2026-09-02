@@ -22,13 +22,13 @@ export function ProjectDetailModal({ project, onClose }) {
       >
         
         {/* Top Header Bar */}
-        <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-[#E5E7EB] bg-[#F9FAFB]">
-          <div className="flex items-center gap-3">
-            <span className="px-3 py-1 text-xs font-mono font-bold bg-[#FF5A00] text-white rounded-full">
+        <div className="flex items-center justify-between px-4 sm:px-8 py-4 sm:py-5 border-b border-[#E5E7EB] bg-[#F9FAFB] gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-mono font-bold bg-[#FF5A00] text-white rounded-full whitespace-nowrap">
               {project.status}
             </span>
-            <span className="text-xs font-mono text-[#6B7280]">
-              {project.language} • SPEC DETAILED INSPECTION
+            <span className="text-[11px] sm:text-xs font-mono text-[#6B7280]">
+              {project.language}
             </span>
           </div>
 

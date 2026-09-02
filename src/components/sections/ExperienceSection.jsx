@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Calendar, MapPin } from 'lucide-react';
 import { portfolioData } from '../../data/portfolioData';
 
@@ -48,14 +48,14 @@ export function ExperienceSection() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-3 text-xs font-mono text-[#6B7280]">
+                <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2.5 sm:gap-3 text-xs font-mono text-[#6B7280]">
                   <span className="flex items-center gap-1">
                     <Calendar size={13} /> {item.period}
                   </span>
                   <span className="flex items-center gap-1">
                     <MapPin size={13} /> {item.location}
                   </span>
-                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] border border-[#D1D5DB] flex items-center justify-center text-[#121316]">
+                  <div className="w-8 h-8 rounded-full bg-[#F3F4F6] border border-[#D1D5DB] flex items-center justify-center text-[#121316] flex-shrink-0">
                     {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                   </div>
                 </div>
