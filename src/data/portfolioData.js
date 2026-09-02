@@ -1,4 +1,4 @@
-﻿export const portfolioData = {
+export const portfolioData = {
   personal: {
     name: "Erland Faturrahman",
     title: "Associate Product Manager | Technical Product Management",
@@ -91,28 +91,87 @@
     {
       id: "voidshare",
       title: "VoidShare",
-      subtitle: "Zero-Server Air-Gapped & P2P File Transfer Protocol",
-      role: "Creator & Product Architect",
+      subtitle: "Zero-Knowledge P2P & Air-Gapped Data Transfer Protocol",
+      role: "Technical Product Manager & System Architect",
       category: "tools",
       status: "Live on GitHub Pages",
       hasLivePreview: true,
       githubIoUrl: "https://erlandfatur.github.io/voidshare/",
       demoUrl: "https://erlandfatur.github.io/voidshare/",
       githubUrl: "https://github.com/Erlandfatur/voidshare",
-      language: "JavaScript",
-      problem: "Air-gapped enterprise computers and isolated environments cannot use standard cloud drives (Google Drive/Dropbox) due to security isolation and internet blackout.",
-      solution: "Engineered a zero-server optical QR video stream encoder that translates binary files into animated QR frames readable by webcams, alongside WebRTC P2P direct streaming.",
+      language: "JavaScript / WebRTC / PWA",
+      problem: "Enterprise workers and field technicians operating in strict air-gapped networks (banking, manufacturing, critical infrastructure) or privacy-conscious scenarios cannot use cloud storage (Google Drive, Dropbox, WhatsApp) due to third-party data transit risks, strict corporate firewalls, or complete network isolation.",
+      solution: "Architected VoidShare: an offline-first, client-side web application providing zero-knowledge file transfers via two distinct modalities: High-Speed Animated Optical QR Streaming for 100% network-free air-gapped devices, and WebRTC Direct P2P Link for zero-server ephemeral transfers.",
       architecture: [
-        "Base64 chunking engine splitting files into sequential QR barcode frames (30-60 FPS).",
-        "WebRTC DataChannel mesh for zero-middleman direct browser-to-browser streaming without database storage.",
-        "Zero-install, zero-account, client-side only cryptographic hash validation."
+        "Offline Shell (PWA): Service Workers & Cache Storage API enabling full application lifecycle with 0 kbps internet connectivity.",
+        "Air-Gap Optical Engine: Binary chunking protocol splitting files into indexed Base64 payloads rendered as cyclic 10-15 FPS QR video stream, decoded via Client Webcam Canvas.",
+        "P2P Signaling & Stream: PeerJS & WebRTC RTCDataChannel mesh with STUN/TURN NAT traversal for direct device-to-device memory buffer transmission with zero backend database storage."
+      ],
+      boundedContexts: [
+        {
+          name: "Offline Shell (PWA)",
+          role: "Application bootstrapping, asset caching & standalone offline client execution",
+          tech: "Service Workers, Cache Storage API, Web App Manifest"
+        },
+        {
+          name: "Air-Gap Optical Engine",
+          role: "Binary file chunking, indexed framing, cyclic high-speed QR rendering & webcam frame scanning",
+          tech: "qrcode.js, jsQR.js, HTML5 Canvas API, Base64/Uint8Array"
+        },
+        {
+          name: "P2P Signaling & Stream",
+          role: "SDP handshake, ICE candidate exchange, NAT traversal & binary RTCDataChannel streaming",
+          tech: "WebRTC, PeerJS, Public STUN/TURN Network"
+        }
+      ],
+      systemFlow: [
+        { step: "01. Intake", detail: "User drops payload file into client memory. System computes file size, MIME type, and SHA-256 integrity checksum." },
+        { step: "02. Routing Logic", detail: "If Air-Gapped / Isolated Network: Triggers Optical Engine. If Connected Devices: Initializes WebRTC Signaling via PeerJS." },
+        { step: "03. Optical Stream", detail: "Chunks payload into [index/total]:payload packets. Drives dynamic Canvas cyclic QR animation at 10-15 FPS." },
+        { step: "04. WebRTC Stream", detail: "Generates ephemeral peer ID link. Handshakes RTCDataChannel, streams binary ArrayBuffer directly between memory buffers." },
+        { step: "05. Verification & Assembly", detail: "Receiver decodes chunks in real time, verifies against original checksum, and triggers browser automatic file download." }
+      ],
+      gwtaiSpecs: [
+        {
+          scenario: "Optical QR Stream Generation & Payload Constraint",
+          given: "User is in Optical Mode (Air-Gap) and has selected a file payload ≤ 2 MB",
+          when: "The user clicks 'Generate Stream'",
+          then: "The system partitions the binary buffer into sequential indexed packets [index/total]:data",
+          and: "Renders cyclic animated QR codes on Canvas at target 10–15 FPS for camera synchronization",
+          ifCondition: "File size exceeds 2 MB, the system triggers a warning banner suggesting WebRTC Mode due to optical transmission latency limits."
+        },
+        {
+          scenario: "WebRTC Mid-Transfer Data Channel Disruption",
+          given: "An active P2P data transfer session is underway with transfer progress at 60%",
+          when: "One peer loses network connectivity or the browser tab closes",
+          then: "WebRTC triggers an ICEConnectionState transition to 'disconnected'",
+          and: "The receiver initiates a 15-second grace period showing an 'Awaiting peer reconnection' toast before terminating the session buffer."
+        }
+      ],
+      tradeoffs: [
+        {
+          title: "Serverless (GitHub Pages) vs. Dedicated Signaling Server",
+          decision: "Client-side architecture using public STUN servers",
+          impact: "Cut infrastructure cost to $0/month and guarantees zero data retention on servers. Accepted limitation: rare symmetric corporate NATs require TURN fallback."
+        },
+        {
+          title: "Optical QR Frame Rate vs. Camera Shutter Synchronization",
+          decision: "Capped cyclic animation between 10-15 FPS instead of 60 FPS",
+          impact: "Prevents rolling shutter packet loss and frame skips on low-end smartphone cameras while maintaining ~50-100 kbps visual transmission throughput."
+        }
+      ],
+      productMetrics: [
+        { label: "Transfer Completion Rate", value: "> 98.5%", desc: "Valid SHA-256 file assembly without packet corruption" },
+        { label: "Handshake Time-to-Connect", value: "< 2.4s", desc: "Mean duration from link generation to open RTCDataChannel" },
+        { label: "Zero-Knowledge Guarantee", value: "0 Bytes", desc: "Zero persistent bytes stored on any intermediate server" }
       ],
       keyPoints: [
-        "Architected optical stream QR data encoding for transferring files across air-gapped offline networks.",
-        "Implemented WebRTC peer-to-peer data channels for serverless direct browser-to-browser payload delivery.",
-        "Designed high-contrast utilitarian UI with zero friction, zero login, and instant drag-and-drop transfers.",
+        "Authored structured PRD & BDD acceptance criteria (GWTAI) guiding client-side WebRTC and Canvas stream engines.",
+        "Engineered dual-modality data transfer solving strict air-gapped isolated network boundaries with zero hardware cables.",
+        "Eliminated server infrastructure costs ($0 OpEx) and privacy liabilities through zero-retention peer-to-peer protocols.",
+        "Optimized optical QR frame-rates (10-15 FPS) balancing transmission speed against smartphone camera shutter latency."
       ],
-      techStack: ["JavaScript", "WebRTC P2P", "Optical QR Protocol", "Canvas API", "GitHub Pages"],
+      techStack: ["JavaScript", "WebRTC (PeerJS)", "Optical QR Engine", "PWA Service Worker", "Canvas API", "GitHub Pages"],
     },
     {
       id: "e-procurement",
