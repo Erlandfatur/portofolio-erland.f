@@ -100,8 +100,9 @@ export const portfolioData = {
       demoUrl: "https://erlandfatur.github.io/voidshare/",
       githubUrl: "https://github.com/Erlandfatur/voidshare",
       language: "JavaScript / WebRTC / PWA",
-      problem: "Enterprise workers and field technicians operating in strict air-gapped networks (banking, manufacturing, critical infrastructure) or privacy-conscious scenarios cannot use cloud storage (Google Drive, Dropbox, WhatsApp) due to third-party data transit risks, strict corporate firewalls, or complete network isolation.",
-      solution: "Architected VoidShare: an offline-first, client-side web application providing zero-knowledge file transfers via two distinct modalities: High-Speed Animated Optical QR Streaming for 100% network-free air-gapped devices, and WebRTC Direct P2P Link for zero-server ephemeral transfers.",
+      problem: "Kebutuhan transfer data antar-perangkat sering kali terkendala dua hal: privasi data (file harus transit di server pihak ketiga seperti Cloud Storage/WhatsApp) dan restriksi jaringan (lingkungan air-gapped, fasilitas medis/manufaktur terisolasi, atau Wi-Fi korporat dengan firewall ketat).",
+      solution: "VoidShare, aplikasi web berbasis client-side murni dengan dua modalitas transfer: Optical QR Streaming (mengubah payload data biner menjadi sekuens animasi QR code berkecepatan tinggi untuk transfer tanpa jaringan apa pun via kamera ke layar), dan WebRTC Direct Link (koneksi peer-to-peer terenkripsi device-to-device tanpa perantara server penyimpanan data / zero-knowledge storage).",
+      targetAudience: "Pegawai korporat di jaringan tertutup, teknisi lapangan di area isolasi/remote, dan user yang memprioritaskan kerahasiaan data (privacy-conscious).",
       architecture: [
         "Offline Shell (PWA): Service Workers & Cache Storage API enabling full application lifecycle with 0 kbps internet connectivity.",
         "Air-Gap Optical Engine: Binary chunking protocol splitting files into indexed Base64 payloads rendered as cyclic 10-15 FPS QR video stream, decoded via Client Webcam Canvas.",

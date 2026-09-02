@@ -114,6 +114,18 @@ export function ProjectDetailModal({ project, onClose }) {
 
           </div>
 
+          {/* Target Audience (If Available) */}
+          {project.targetAudience && (
+            <div className="bg-[#EFF6FF] border border-[#BFDBFE] p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-3">
+              <span className="text-[11px] font-mono font-bold text-blue-700 uppercase bg-blue-100 px-3 py-1 rounded-full whitespace-nowrap self-start sm:self-auto">
+                🎯 TARGET AUDIENCE
+              </span>
+              <p className="text-xs text-[#1E3A8A] font-sans">
+                {project.targetAudience}
+              </p>
+            </div>
+          )}
+
           {/* TPM & System Bounded Contexts (If Available) */}
           {project.boundedContexts && (
             <div className="space-y-3 font-mono">
@@ -140,16 +152,28 @@ export function ProjectDetailModal({ project, onClose }) {
             </div>
           )}
 
-          {/* System Logic Flow (Step-by-Step Architecture) */}
+          {/* System Logic Flow (BPMN Diagram & Step-by-Step Execution) */}
           {project.systemFlow && (
             <div className="bg-[#121316] text-[#F3F4F6] p-6 rounded-2xl space-y-4 font-mono">
               <div className="flex items-center justify-between border-b border-[#2A2E37] pb-3">
                 <span className="text-xs font-bold text-[#FF5A00] tracking-wider uppercase">
-                  ⚡ SYSTEM LOGIC & DATA FLOW PROTOCOL:
+                  ⚡ BPMN FLOWCHART & SYSTEM LOGIC PROTOCOL:
                 </span>
-                <span className="text-[10px] text-[#9CA3AF]">END-TO-END EXECUTION</span>
+                <span className="text-[10px] text-[#9CA3AF]">DUAL-MODALITY PROTOCOL</span>
               </div>
-              <div className="grid grid-cols-1 gap-3">
+
+              {/* Visual ASCII / Lucidchart-style Flowchart */}
+              <div className="p-4 bg-[#0B0C0E] rounded-xl border border-[#2A2E37] text-[11px] leading-relaxed text-[#9CA3AF] overflow-x-auto whitespace-pre font-mono">
+{`[User Selects File]
+      │
+      ▼
+< Network Context? >
+      ├── [Air-Gapped / No Network] ──► [Chunk Binary File] ──► [Render Cyclic Animated QR (10-15 FPS)] ──► [Receiver WebCam Scans] ──► [Verify SHA-256 & Assemble]
+      │
+      └── [High Speed / Connected]  ──► [Init PeerJS Client] ──► [STUN Handshake & Link Gen] ──► [Establish RTCDataChannel] ──► [Direct Binary Stream ArrayBuffer]`}
+              </div>
+
+              <div className="grid grid-cols-1 gap-2.5 pt-1">
                 {project.systemFlow.map((flow, i) => (
                   <div key={i} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-3 rounded-lg bg-[#1B1E26] border border-[#2A2E37]/60">
                     <span className="text-xs font-bold text-[#FF5A00] whitespace-nowrap min-w-[140px]">
