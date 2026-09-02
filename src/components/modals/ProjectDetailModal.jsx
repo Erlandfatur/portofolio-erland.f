@@ -162,103 +162,160 @@ export function ProjectDetailModal({ project, onClose }) {
                 <span className="text-[10px] text-[#9CA3AF]">DUAL-MODALITY PROTOCOL</span>
               </div>
 
-              {/* Rich Visual BPMN 2.0 Flowchart Diagram (SVG) */}
+              {/* Rich Visual BPMN 2.0 Flowchart Diagram (SVG) - Conditional per Project */}
               <div className="p-5 bg-[#0B0C0E] rounded-xl border border-[#2A2E37] overflow-x-auto">
                 <div className="min-w-[780px] py-2">
-                  <svg viewBox="0 0 880 260" className="w-full h-auto text-xs select-none">
-                    <defs>
-                      <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                        <path d="M 0 1 L 10 5 L 0 9 z" fill="#FF5A00" />
-                      </marker>
-                      <linearGradient id="boxGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#1F232D" />
-                        <stop offset="100%" stopColor="#13161C" />
-                      </linearGradient>
-                      <linearGradient id="gwGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#374151" />
-                        <stop offset="100%" stopColor="#1F2937" />
-                      </linearGradient>
-                    </defs>
+                  {project.id === 'voidshare' ? (
+                    /* VoidShare: Air-Gapped Optical vs WebRTC P2P BPMN */
+                    <svg viewBox="0 0 880 260" className="w-full h-auto text-xs select-none">
+                      <defs>
+                        <marker id="arrow-orange" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 1 L 10 5 L 0 9 z" fill="#FF5A00" />
+                        </marker>
+                        <linearGradient id="boxGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="#1F232D" />
+                          <stop offset="100%" stopColor="#13161C" />
+                        </linearGradient>
+                        <linearGradient id="gwGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#374151" />
+                          <stop offset="100%" stopColor="#1F2937" />
+                        </linearGradient>
+                      </defs>
 
-                    {/* Lane Labels */}
-                    <rect x="0" y="25" width="880" height="95" rx="8" fill="#14171F" stroke="#232733" strokeDasharray="3 3" />
-                    <text x="14" y="44" fill="#3B82F6" fontWeight="bold" fontSize="10" letterSpacing="0.05em">LANE A: AIR-GAPPED OPTICAL QR STREAM (100% OFFLINE)</text>
+                      <rect x="0" y="25" width="880" height="95" rx="8" fill="#14171F" stroke="#232733" strokeDasharray="3 3" />
+                      <text x="14" y="44" fill="#3B82F6" fontWeight="bold" fontSize="10" letterSpacing="0.05em">LANE A: AIR-GAPPED OPTICAL QR STREAM (100% OFFLINE)</text>
 
-                    <rect x="0" y="135" width="880" height="95" rx="8" fill="#14171F" stroke="#232733" strokeDasharray="3 3" />
-                    <text x="14" y="154" fill="#10B981" fontWeight="bold" fontSize="10" letterSpacing="0.05em">LANE B: WEBRTC DIRECT LINK (HIGH-SPEED P2P)</text>
+                      <rect x="0" y="135" width="880" height="95" rx="8" fill="#14171F" stroke="#232733" strokeDasharray="3 3" />
+                      <text x="14" y="154" fill="#10B981" fontWeight="bold" fontSize="10" letterSpacing="0.05em">LANE B: WEBRTC DIRECT LINK (HIGH-SPEED P2P)</text>
 
-                    {/* Start Event: User Drops/Selects File */}
-                    <circle cx="50" cy="128" r="18" fill="#10B981" fillOpacity="0.2" stroke="#10B981" strokeWidth="2.5" />
-                    <circle cx="50" cy="128" r="8" fill="#10B981" />
-                    <text x="50" y="162" textAnchor="middle" fill="#9CA3AF" fontSize="10" fontWeight="bold">Intake File</text>
+                      <circle cx="50" cy="128" r="18" fill="#10B981" fillOpacity="0.2" stroke="#10B981" strokeWidth="2.5" />
+                      <circle cx="50" cy="128" r="8" fill="#10B981" />
+                      <text x="50" y="162" textAnchor="middle" fill="#9CA3AF" fontSize="10" fontWeight="bold">Intake File</text>
 
-                    {/* Arrow: Start to Gateway */}
-                    <line x1="70" y1="128" x2="135" y2="128" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+                      <line x1="70" y1="128" x2="135" y2="128" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow-orange)" />
 
-                    {/* BPMN Gateway (Diamond): Network Context? */}
-                    <g transform="translate(145, 108)">
-                      <polygon points="20,0 40,20 20,40 0,20" fill="url(#gwGrad)" stroke="#FF5A00" strokeWidth="2" />
-                      <text x="20" y="24" textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="bold">✕</text>
-                    </g>
-                    <text x="165" y="95" textAnchor="middle" fill="#F3F4F6" fontSize="10" fontWeight="bold">Network?</text>
+                      <g transform="translate(145, 108)">
+                        <polygon points="20,0 40,20 20,40 0,20" fill="url(#gwGrad)" stroke="#FF5A00" strokeWidth="2" />
+                        <text x="20" y="24" textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="bold">✕</text>
+                      </g>
+                      <text x="165" y="95" textAnchor="middle" fill="#F3F4F6" fontSize="10" fontWeight="bold">Network?</text>
 
-                    {/* Top Branch (Air-Gapped) */}
-                    <path d="M 165 108 L 165 72 L 225 72" fill="none" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
-                    <text x="180" y="62" fill="#93C5FD" fontSize="9" fontWeight="bold">Air-Gapped</text>
+                      <path d="M 165 108 L 165 72 L 225 72" fill="none" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow-orange)" />
+                      <text x="180" y="62" fill="#93C5FD" fontSize="9" fontWeight="bold">Air-Gapped</text>
 
-                    {/* Lane A - Task 1: Chunk Binary Payload */}
-                    <rect x="235" y="47" width="130" height="50" rx="8" fill="url(#boxGrad)" stroke="#3B82F6" strokeWidth="1.5" />
-                    <text x="300" y="68" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Chunk Binary File</text>
-                    <text x="300" y="84" textAnchor="middle" fill="#9CA3AF" fontSize="9">[index/total]:payload</text>
+                      <rect x="235" y="47" width="130" height="50" rx="8" fill="url(#boxGrad)" stroke="#3B82F6" strokeWidth="1.5" />
+                      <text x="300" y="68" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Chunk Binary File</text>
+                      <text x="300" y="84" textAnchor="middle" fill="#9CA3AF" fontSize="9">[index/total]:payload</text>
 
-                    <line x1="365" y1="72" x2="395" y2="72" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+                      <line x1="365" y1="72" x2="395" y2="72" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow-orange)" />
 
-                    {/* Lane A - Task 2: Render Cyclic Animated QR */}
-                    <rect x="405" y="47" width="145" height="50" rx="8" fill="url(#boxGrad)" stroke="#3B82F6" strokeWidth="1.5" />
-                    <text x="477" y="68" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Render Animated QR</text>
-                    <text x="477" y="84" textAnchor="middle" fill="#60A5FA" fontSize="9">Canvas Stream 10-15 FPS</text>
+                      <rect x="405" y="47" width="145" height="50" rx="8" fill="url(#boxGrad)" stroke="#3B82F6" strokeWidth="1.5" />
+                      <text x="477" y="68" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Render Animated QR</text>
+                      <text x="477" y="84" textAnchor="middle" fill="#60A5FA" fontSize="9">Canvas Stream 10-15 FPS</text>
 
-                    <line x1="550" y1="72" x2="580" y2="72" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+                      <line x1="550" y1="72" x2="580" y2="72" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow-orange)" />
 
-                    {/* Lane A - Task 3: Receiver Webcam Scan */}
-                    <rect x="590" y="47" width="135" height="50" rx="8" fill="url(#boxGrad)" stroke="#3B82F6" strokeWidth="1.5" />
-                    <text x="657" y="68" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Receiver Webcam</text>
-                    <text x="657" y="84" textAnchor="middle" fill="#9CA3AF" fontSize="9">Optical Scan & Decode</text>
+                      <rect x="590" y="47" width="135" height="50" rx="8" fill="url(#boxGrad)" stroke="#3B82F6" strokeWidth="1.5" />
+                      <text x="657" y="68" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Receiver Webcam</text>
+                      <text x="657" y="84" textAnchor="middle" fill="#9CA3AF" fontSize="9">Optical Scan & Decode</text>
 
-                    {/* Bottom Branch (Connected / WebRTC) */}
-                    <path d="M 165 148 L 165 182 L 225 182" fill="none" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
-                    <text x="180" y="176" fill="#A7F3D0" fontSize="9" fontWeight="bold">Online</text>
+                      <path d="M 165 148 L 165 182 L 225 182" fill="none" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow-orange)" />
+                      <text x="180" y="176" fill="#A7F3D0" fontSize="9" fontWeight="bold">Online</text>
 
-                    {/* Lane B - Task 1: Init PeerJS & STUN */}
-                    <rect x="235" y="157" width="130" height="50" rx="8" fill="url(#boxGrad)" stroke="#10B981" strokeWidth="1.5" />
-                    <text x="300" y="178" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Init PeerJS Client</text>
-                    <text x="300" y="194" textAnchor="middle" fill="#9CA3AF" fontSize="9">STUN Handshake & URL</text>
+                      <rect x="235" y="157" width="130" height="50" rx="8" fill="url(#boxGrad)" stroke="#10B981" strokeWidth="1.5" />
+                      <text x="300" y="178" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Init PeerJS Client</text>
+                      <text x="300" y="194" textAnchor="middle" fill="#9CA3AF" fontSize="9">STUN Handshake & URL</text>
 
-                    <line x1="365" y1="182" x2="395" y2="182" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+                      <line x1="365" y1="182" x2="395" y2="182" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow-orange)" />
 
-                    {/* Lane B - Task 2: RTCDataChannel Stream */}
-                    <rect x="405" y="157" width="145" height="50" rx="8" fill="url(#boxGrad)" stroke="#10B981" strokeWidth="1.5" />
-                    <text x="477" y="178" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Open RTCDataChannel</text>
-                    <text x="477" y="194" textAnchor="middle" fill="#34D399" fontSize="9">Direct P2P Memory Buffer</text>
+                      <rect x="405" y="157" width="145" height="50" rx="8" fill="url(#boxGrad)" stroke="#10B981" strokeWidth="1.5" />
+                      <text x="477" y="178" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Open RTCDataChannel</text>
+                      <text x="477" y="194" textAnchor="middle" fill="#34D399" fontSize="9">Direct P2P Memory Buffer</text>
 
-                    <line x1="550" y1="182" x2="580" y2="182" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+                      <line x1="550" y1="182" x2="580" y2="182" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow-orange)" />
 
-                    {/* Lane B - Task 3: Stream Binary ArrayBuffer */}
-                    <rect x="590" y="157" width="135" height="50" rx="8" fill="url(#boxGrad)" stroke="#10B981" strokeWidth="1.5" />
-                    <text x="657" y="178" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Stream ArrayBuffer</text>
-                    <text x="657" y="194" textAnchor="middle" fill="#9CA3AF" fontSize="9">Zero-Server Transit</text>
+                      <rect x="590" y="157" width="135" height="50" rx="8" fill="url(#boxGrad)" stroke="#10B981" strokeWidth="1.5" />
+                      <text x="657" y="178" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Stream ArrayBuffer</text>
+                      <text x="657" y="194" textAnchor="middle" fill="#9CA3AF" fontSize="9">Zero-Server Transit</text>
 
-                    {/* Merge to End Event: Verify SHA-256 Checksum & Assemble */}
-                    <path d="M 725 72 L 755 72 L 755 115" fill="none" stroke="#FF5A00" strokeWidth="2" />
-                    <path d="M 725 182 L 755 182 L 755 141" fill="none" stroke="#FF5A00" strokeWidth="2" />
-                    <line x1="755" y1="128" x2="795" y2="128" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow)" />
+                      <path d="M 725 72 L 755 72 L 755 115" fill="none" stroke="#FF5A00" strokeWidth="2" />
+                      <path d="M 725 182 L 755 182 L 755 141" fill="none" stroke="#FF5A00" strokeWidth="2" />
+                      <line x1="755" y1="128" x2="795" y2="128" stroke="#FF5A00" strokeWidth="2" markerEnd="url(#arrow-orange)" />
 
-                    {/* End Event: Assembled File */}
-                    <circle cx="820" cy="128" r="20" fill="#EF4444" fillOpacity="0.15" stroke="#FF5A00" strokeWidth="3" />
-                    <circle cx="820" cy="128" r="14" fill="#FF5A00" />
-                    <text x="820" y="162" textAnchor="middle" fill="#F3F4F6" fontSize="10" fontWeight="bold">File Assembled</text>
-                    <text x="820" y="174" textAnchor="middle" fill="#9CA3AF" fontSize="8">Checksum Verified</text>
-                  </svg>
+                      <circle cx="820" cy="128" r="20" fill="#EF4444" fillOpacity="0.15" stroke="#FF5A00" strokeWidth="3" />
+                      <circle cx="820" cy="128" r="14" fill="#FF5A00" />
+                      <text x="820" y="162" textAnchor="middle" fill="#F3F4F6" fontSize="10" fontWeight="bold">File Assembled</text>
+                      <text x="820" y="174" textAnchor="middle" fill="#9CA3AF" fontSize="8">Checksum Verified</text>
+                    </svg>
+                  ) : (
+                    /* Speech Translator Enterprise: Real-Time Audio AI Orchestration Pipeline Diagram */
+                    <svg viewBox="0 0 880 260" className="w-full h-auto text-xs select-none">
+                      <defs>
+                        <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 1 L 10 5 L 0 9 z" fill="#A855F7" />
+                        </marker>
+                        <linearGradient id="aiBoxGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="#1E1B2E" />
+                          <stop offset="100%" stopColor="#13111C" />
+                        </linearGradient>
+                      </defs>
+
+                      {/* Lane Labels: Client Tier vs Cloud Inference Tier */}
+                      <rect x="0" y="20" width="880" height="95" rx="8" fill="#13111C" stroke="#2A2438" strokeDasharray="3 3" />
+                      <text x="14" y="38" fill="#60A5FA" fontWeight="bold" fontSize="10" letterSpacing="0.05em">TIER 1: CLIENT EDGE (CHROME EXTENSION MV3 / DESKTOP BYOK)</text>
+
+                      <rect x="0" y="130" width="880" height="115" rx="8" fill="#13111C" stroke="#2A2438" strokeDasharray="3 3" />
+                      <text x="14" y="148" fill="#C084FC" fontWeight="bold" fontSize="10" letterSpacing="0.05em">TIER 2: REAL-TIME INFERENCE GATEWAY (WEBSOCKET ORCHESTRATION & FAILOVER)</text>
+
+                      {/* Start: Audio Stream Ingestion */}
+                      <circle cx="55" cy="70" r="18" fill="#3B82F6" fillOpacity="0.2" stroke="#3B82F6" strokeWidth="2.5" />
+                      <circle cx="55" cy="70" r="8" fill="#3B82F6" />
+                      <text x="55" y="104" textAnchor="middle" fill="#93C5FD" fontSize="9" fontWeight="bold">tabCapture API</text>
+
+                      <line x1="75" y1="70" x2="115" y2="70" stroke="#A855F7" strokeWidth="2" markerEnd="url(#arrow-purple)" />
+
+                      {/* Client Step 1: Silero VAD Detection */}
+                      <rect x="125" y="45" width="135" height="50" rx="8" fill="url(#aiBoxGrad)" stroke="#60A5FA" strokeWidth="1.5" />
+                      <text x="192" y="66" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Silero VAD v5</text>
+                      <text x="192" y="82" textAnchor="middle" fill="#93C5FD" fontSize="9">Silence ≥ 0.6s Flush</text>
+
+                      <line x1="260" y1="70" x2="295" y2="70" stroke="#A855F7" strokeWidth="2" />
+                      <path d="M 295 70 L 295 185 L 325 185" fill="none" stroke="#A855F7" strokeWidth="2" markerEnd="url(#arrow-purple)" />
+                      <text x="290" y="135" textAnchor="end" fill="#C084FC" fontSize="9" fontWeight="bold">WebSocket Frame</text>
+
+                      {/* Cloud Step 1: STT Groq Whisper + Fallback */}
+                      <rect x="335" y="157" width="135" height="56" rx="8" fill="url(#aiBoxGrad)" stroke="#A855F7" strokeWidth="1.5" />
+                      <text x="402" y="177" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Groq Whisper Turbo</text>
+                      <text x="402" y="192" textAnchor="middle" fill="#4ADE80" fontSize="9">&lt; 350ms Inference</text>
+                      <text x="402" y="204" textAnchor="middle" fill="#9CA3AF" fontSize="8">[Fallback: FasterWhisper]</text>
+
+                      <line x1="470" y1="185" x2="500" y2="185" stroke="#A855F7" strokeWidth="2" markerEnd="url(#arrow-purple)" />
+
+                      {/* Cloud Step 2: NMT Llama 3.3 + Glossary Injection */}
+                      <rect x="510" y="157" width="145" height="56" rx="8" fill="url(#aiBoxGrad)" stroke="#A855F7" strokeWidth="1.5" />
+                      <text x="582" y="177" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Llama-3.3-70B NMT</text>
+                      <text x="582" y="192" textAnchor="middle" fill="#FBBF24" fontSize="9">+370 Enterprise Glossaries</text>
+                      <text x="582" y="204" textAnchor="middle" fill="#9CA3AF" fontSize="8">[Fallback: Gemini Flash]</text>
+
+                      <line x1="655" y1="185" x2="685" y2="185" stroke="#A855F7" strokeWidth="2" markerEnd="url(#arrow-purple)" />
+
+                      {/* Cloud Step 3: Neural Dubbing TTS */}
+                      <rect x="695" y="157" width="130" height="56" rx="8" fill="url(#aiBoxGrad)" stroke="#A855F7" strokeWidth="1.5" />
+                      <text x="760" y="177" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">Edge-TTS Neural</text>
+                      <text x="760" y="192" textAnchor="middle" fill="#34D399" fontSize="9">Human Voice Dubbing</text>
+                      <text x="760" y="204" textAnchor="middle" fill="#9CA3AF" fontSize="8">[Fallback: Piper ONNX]</text>
+
+                      {/* Return Path to Client */}
+                      <path d="M 760 157 L 760 70 L 805 70" fill="none" stroke="#A855F7" strokeWidth="2" markerEnd="url(#arrow-purple)" />
+                      <text x="770" y="115" fill="#34D399" fontSize="9" fontWeight="bold">WS Audio Return</text>
+
+                      {/* End Event: Real-Time Audio Output */}
+                      <circle cx="830" cy="70" r="20" fill="#10B981" fillOpacity="0.2" stroke="#10B981" strokeWidth="3" />
+                      <circle cx="830" cy="70" r="12" fill="#10B981" />
+                      <text x="830" y="104" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold">P95 &lt; 1.5s</text>
+                      <text x="830" y="116" textAnchor="middle" fill="#6EE7B7" fontSize="8">Live Dubbed</text>
+                    </svg>
+                  )}
                 </div>
               </div>
 
