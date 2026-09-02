@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { ArrowUpRight, Code, Eye, Globe } from 'lucide-react';
 import { portfolioData } from '../../data/portfolioData';
 
@@ -7,11 +7,9 @@ export function ProjectsSection({ activeProjectIdx, setActiveProjectIdx, onOpenP
   const { projects } = portfolioData;
 
   const categories = [
-    { id: 'all', label: 'ALL REPOSITORIES' },
+    { id: 'all', label: 'ALL CASE STUDIES' },
     { id: 'ai', label: 'AI & AGENTS' },
-    { id: 'enterprise', label: 'ENTERPRISE SAAS' },
-    { id: 'tools', label: 'PROTOCOLS & TOOLS' },
-    { id: 'games', label: '3D & GAMES' },
+    { id: 'tools', label: 'ZERO-KNOWLEDGE & TOOLS' },
   ];
 
   const filteredProjects = selectedFilter === 'all'

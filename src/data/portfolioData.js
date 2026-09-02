@@ -175,32 +175,6 @@ export const portfolioData = {
       techStack: ["JavaScript", "WebRTC (PeerJS)", "Optical QR Engine", "PWA Service Worker", "Canvas API", "GitHub Pages"],
     },
     {
-      id: "e-procurement",
-      title: "Esco E-Procurement System",
-      subtitle: "Enterprise Procure-to-Pay (P2P) Platform",
-      role: "Associate Product Specialist",
-      category: "enterprise",
-      status: "Live on GitHub Pages",
-      hasLivePreview: true,
-      githubIoUrl: "https://erlandfatur.github.io/e-procurement-system/",
-      demoUrl: "https://erlandfatur.github.io/e-procurement-system/",
-      githubUrl: "https://github.com/Erlandfatur/e-procurement-system",
-      language: "JavaScript / Next.js",
-      problem: "Manual email-based purchase requisitions caused financial discrepancies, duplicate invoice approvals, and multi-week procurement delays across regional offices.",
-      solution: "Built a centralized Procure-to-Pay (P2P) digital portal with dynamic approval matrices, real-time budget lock concurrency, and automated PO generation.",
-      architecture: [
-        "Role-Based Access Control (RBAC) separating Requester, Dept Head, Finance, and Procurement leads.",
-        "Optimistic locking and atomic transactions to prevent double-spending from department expense pools.",
-        "Modular microservices with full audit logging and SLA tracking."
-      ],
-      keyPoints: [
-        "Structured end-to-end PRDs, multi-tier approval workflows, and roadmap priorities (P0/P1) across NestJS/Next.js.",
-        "Formulated strict specifications for server-side calculations, budget reservation concurrency controls, and RBAC authorization.",
-        "Eliminated manual approval bottlenecks and financial discrepancies for cross-regional business operations.",
-      ],
-      techStack: ["Next.js", "JavaScript", "RBAC", "PRD/BRD", "Kaizen Workflow", "GitHub Pages"],
-    },
-    {
       id: "speech-translator",
       title: "Speech Translator Enterprise",
       subtitle: "Enterprise Speech-to-Speech AI Translator & Dubbing Engine",
@@ -233,64 +207,63 @@ export const portfolioData = {
           tradeoff: "Reduces cloud server compute and network egress by only processing active speech (saves 40% token cost)."
         },
         {
-          stage: "STT (Transcription)",
+          stage: "Speech-to-Text (STT)",
           primary: "Groq Whisper Large v3 Turbo",
-          fallback: "FasterWhisper (Local ONNX)",
-          tradeoff: "Sub-350ms cloud inference speed vs. offline reliability during external API network throttling."
+          fallback: "Local FasterWhisper (ONNX)",
+          tradeoff: "Sub-350ms streaming inference to preserve conversational rhythm; local fallback ensures offline resiliency."
         },
         {
-          stage: "NMT (Contextual Translation)",
-          primary: "Groq Llama-3.3-70B",
-          fallback: "Gemini Flash / Google Translate",
-          tradeoff: "Contextual understanding of localized business jargon + system prompt injection of ~370 enterprise terms."
+          stage: "Neural Translation (NMT)",
+          primary: "Groq Llama-3.3-70B (Glossary)",
+          fallback: "Gemini 1.5 Flash / Google NMT",
+          tradeoff: "Injected 370+ enterprise domain terms into system context; fallback to cloud APIs during rate spikes."
         },
         {
-          stage: "TTS (Neural Dubbing)",
-          primary: "Edge-TTS (Neural)",
-          fallback: "Piper TTS (Local ONNX)",
-          tradeoff: "Human-like cadence and prosody without exorbitant per-character enterprise voice licensing fees."
+          stage: "Voice Dubbing (TTS)",
+          primary: "Edge-TTS Neural Voice Mesh",
+          fallback: "Piper TTS (Local CPU)",
+          tradeoff: "High-fidelity human voice dubbing without high GPU rental overhead; offline Piper runs on edge client."
         }
       ],
       systemFlow: [
-        { step: "01. Capture", detail: "Chrome Extension MV3 captures raw clean audio via tabCapture API / Virtual Cable without requiring invasive meeting bots." },
-        { step: "02. VAD Detection", detail: "Silero VAD ONNX identifies silence pauses ≥ 0.6s after minimum 1.5s speech buffer is met, triggering immediate WebSocket payload flush." },
-        { step: "03. Groq STT", detail: "Audio buffer streams to Groq Whisper Large v3 Turbo for high-fidelity transcription within < 350ms." },
-        { step: "04. Contextual NMT", detail: "Llama-3.3-70B synthesizes translation with domain prompt injection of ~370 specialized corporate terms." },
-        { step: "05. Neural Dubbing", detail: "Edge-TTS generates natural audio stream, returned over WebSocket with P95 end-to-end latency < 1.5s." }
+        { step: "01. Ingestion", detail: "Chrome Extension MV3 captures raw meeting tab audio via chrome.tabCapture at 16kHz PCM." },
+        { step: "02. VAD Detection", detail: "Silero VAD checks speech boundaries in real time; silence ≥ 0.6s flushes chunk to WebSocket." },
+        { step: "03. STT Inference", detail: "Groq Whisper v3 transcribes raw PCM to text transcript within ~300ms." },
+        { step: "04. Contextual NMT", detail: "Llama-3.3-70B injects enterprise custom glossaries, outputting target language text." },
+        { step: "05. Neural Dubbing", detail: "Edge-TTS converts translated tokens into live synthesized voice streamed back to user in < 1.5s P95." }
       ],
       gwtaiSpecs: [
         {
-          scenario: "Dynamic Buffer Flush & Low-Latency Translation",
-          given: "Bidirectional voice translation session is active on Chrome Extension MV3",
+          scenario: "Dynamic Silence VAD Buffer Flushing",
+          given: "Participant speaks in an active enterprise Zoom or Google Meet room",
           when: "Silero VAD detects speech silence ≥ 0.6s after meeting minimum 1.5s speech buffer threshold",
           then: "The system flushes the audio payload immediately to the WebSocket gateway",
-          and: "The server returns dubbing audio stream within target latency budget ≤ 1.2s",
-          ifCondition: "Inference queue latency exceeds 2.0s due to network congestion, the system automatically activates a Subtitle Overlay visual fallback before neural audio render completes."
+          and: "Returns dubbing stream within target latency budget ≤ 1.2s without cutting off ongoing words."
         },
         {
-          scenario: "Enterprise Token & Rate Limiting (Cost Protection)",
-          given: "An enterprise user accesses the premium WebSocket cluster with 0 remaining credits",
-          when: "User initiates WebSocket handshake to ws://gateway/ws/translate?token=<jwt>",
-          then: "The server rejects the handshake with WebSocket close code 4402 (Payment Required)",
-          and: "The client UI renders an upgrade modal: 'Monthly quota reached. Upgrade plan or switch to BYOK Desktop mode.'"
+          scenario: "Graceful Model Degradation & Quota Depletion Failover",
+          given: "Cloud API provider (Groq Whisper / Llama) encounters HTTP 429 rate limit or network partition",
+          when: "Inference gateway reports request timeout > 800ms",
+          then: "Circuit breaker routes inference to secondary fallback (Gemini Flash or local FasterWhisper)",
+          and: "Maintains uninterrupted continuous captioning and dubbing stream with zero UI freeze."
         }
       ],
       tradeoffs: [
         {
-          title: "API Orchestration vs. Self-Hosted Heavy Models",
-          decision: "Leveraged ultra-fast cloud APIs (Groq Llama-3.3 & Whisper) as primary tier; local models strictly as disaster recovery fallback",
-          impact: "Prevented runaway cloud GPU expenses ($000s/mo), preserved SaaS gross margins, and maintained a 99.9% uptime SLA."
+          title: "Cloud API Orchestration vs. Dedicated GPU Server",
+          decision: "Serverless multi-provider API routing (Groq + Gemini) over dedicated $800/mo GPU instances",
+          impact: "Cut infrastructure baseline to near-zero ($0 fixed OpEx), paying strictly per active meeting minute."
         },
         {
-          title: "Chrome Extension tabCapture vs. Virtual Meeting Bot",
-          decision: "Engineered Chrome MV3 client-side tab capture over headless meeting bots (Otter/Fireflies)",
-          impact: "Eliminated enterprise IT security friction—allowing users to translate internal confidential meetings without requiring workspace admin bot approvals."
+          title: "Chrome Extension MV3 vs. Virtual Meeting Bot",
+          decision: "Engineered tabCapture Chrome extension rather than an intrusive bot participant",
+          impact: "Eliminated enterprise security compliance hurdles—no meeting room admin approval required to join."
         }
       ],
       productMetrics: [
-        { label: "End-to-End Latency", value: "< 1.5s", desc: "P95 speech-to-speech round-trip maintaining natural conversational turn-taking" },
-        { label: "Domain Accuracy", value: "98.6%", desc: "Glossary benchmark match rate across technical & financial enterprise terminology" },
-        { label: "Cost-per-Meeting-Hour", value: "< $0.15/hr", desc: "Average compute spend per meeting hour achieved via dynamic VAD silence flushing" }
+        { label: "End-to-End Latency", value: "< 1.5s", desc: "P95 voice-to-voice turn-around budget" },
+        { label: "Glossary Accuracy", value: "98.6%", desc: "Match rate for ~370 technical domain terms" },
+        { label: "Compute Efficiency", value: "< $0.15", desc: "Estimated server cost per active meeting hour" }
       ],
       starFraming: {
         situation: "Real-time voice AI trilemma: minimizing latency, preventing margin-eroding cloud GPU costs, and ensuring strict enterprise contextual precision.",
@@ -305,32 +278,6 @@ export const portfolioData = {
         "Structured a dual-tier product offering: Enterprise Metered Token Credits vs. Self-hosted BYOK Desktop Client."
       ],
       techStack: ["Python", "Groq Whisper v3", "Llama 3.3 70B", "Edge-TTS", "WebSockets", "Silero VAD", "Chrome MV3"],
-    },
-    {
-      id: "nusantara-trading",
-      title: "Nusantara Trading Terminal",
-      subtitle: "Algorithmic Market Analytics SaaS",
-      role: "Product Manager & System Architect",
-      category: "enterprise",
-      status: "Live SaaS Production",
-      hasLivePreview: true,
-      githubIoUrl: "https://nusantara-trading-terminal.streamlit.app/",
-      demoUrl: "https://nusantara-trading-terminal.streamlit.app/",
-      githubUrl: "https://github.com/Erlandfatur",
-      language: "Python / Streamlit",
-      problem: "Retail stock traders in Indonesia lack accessible institutional-grade market anomaly scanners and whale volume accumulation trackers.",
-      solution: "Launched a full-featured SaaS web terminal scanning 700+ IDX tickers in real-time with proprietary volume flow algorithms and Mayar.id subscriptions.",
-      architecture: [
-        "Automated IDX data ingestion pipeline updating order book indicators across 700+ tickers.",
-        "Whale Radar indicator algorithm detecting atypical block transactions and institutional accumulation.",
-        "Mayar.id webhook payment gateway managing automated tier activations and VIP discord alerts."
-      ],
-      keyPoints: [
-        "Defined product roadmap and subscription pricing models for high-frequency market analytics.",
-        "Designed interactive Streamlit/Plotly dashboards and integrated Mayar.id payment gateways.",
-        "Translated technical market indicators and order book anomalies into actionable user insights.",
-      ],
-      techStack: ["Python", "Streamlit", "Plotly", "Mayar.id", "Market Analytics", "PRD Drafting"],
     },
     {
       id: "upwork-agent",
@@ -428,6 +375,61 @@ export const portfolioData = {
         "Engineered sub-60s event-driven notification dispatch via Telegram Bot API with 1-click interactive actions."
       ],
       techStack: ["Python 3.11+", "Groq (Llama 3.3 70B)", "MongoDB", "Telegram Bot API", "Docker", "Regex Engine"],
+    },
+  ],
+
+  archivedProjects: [
+    {
+      id: "e-procurement",
+      title: "Esco E-Procurement System",
+      subtitle: "Enterprise Procure-to-Pay (P2P) Platform",
+      role: "Associate Product Specialist",
+      category: "enterprise",
+      status: "Live on GitHub Pages",
+      hasLivePreview: true,
+      githubIoUrl: "https://erlandfatur.github.io/e-procurement-system/",
+      demoUrl: "https://erlandfatur.github.io/e-procurement-system/",
+      githubUrl: "https://github.com/Erlandfatur/e-procurement-system",
+      language: "JavaScript / Next.js",
+      problem: "Manual email-based purchase requisitions caused financial discrepancies, duplicate invoice approvals, and multi-week procurement delays across regional offices.",
+      solution: "Built a centralized Procure-to-Pay (P2P) digital portal with dynamic approval matrices, real-time budget lock concurrency, and automated PO generation.",
+      architecture: [
+        "Role-Based Access Control (RBAC) separating Requester, Dept Head, Finance, and Procurement leads.",
+        "Optimistic locking and atomic transactions to prevent double-spending from department expense pools.",
+        "Modular microservices with full audit logging and SLA tracking."
+      ],
+      keyPoints: [
+        "Structured end-to-end PRDs, multi-tier approval workflows, and roadmap priorities (P0/P1) across NestJS/Next.js.",
+        "Formulated strict specifications for server-side calculations, budget reservation concurrency controls, and RBAC authorization.",
+        "Eliminated manual approval bottlenecks and financial discrepancies for cross-regional business operations.",
+      ],
+      techStack: ["Next.js", "JavaScript", "RBAC", "PRD/BRD", "Kaizen Workflow", "GitHub Pages"],
+    },
+    {
+      id: "nusantara-trading",
+      title: "Nusantara Trading Terminal",
+      subtitle: "Algorithmic Market Analytics SaaS",
+      role: "Product Manager & System Architect",
+      category: "enterprise",
+      status: "Live SaaS Production",
+      hasLivePreview: true,
+      githubIoUrl: "https://nusantara-trading-terminal.streamlit.app/",
+      demoUrl: "https://nusantara-trading-terminal.streamlit.app/",
+      githubUrl: "https://github.com/Erlandfatur",
+      language: "Python / Streamlit",
+      problem: "Retail stock traders in Indonesia lack accessible institutional-grade market anomaly scanners and whale volume accumulation trackers.",
+      solution: "Launched a full-featured SaaS web terminal scanning 700+ IDX tickers in real-time with proprietary volume flow algorithms and Mayar.id subscriptions.",
+      architecture: [
+        "Automated IDX data ingestion pipeline updating order book indicators across 700+ tickers.",
+        "Whale Radar indicator algorithm detecting atypical block transactions and institutional accumulation.",
+        "Mayar.id webhook payment gateway managing automated tier activations and VIP discord alerts."
+      ],
+      keyPoints: [
+        "Defined product roadmap and subscription pricing models for high-frequency market analytics.",
+        "Designed interactive Streamlit/Plotly dashboards and integrated Mayar.id payment gateways.",
+        "Translated technical market indicators and order book anomalies into actionable user insights.",
+      ],
+      techStack: ["Python", "Streamlit", "Plotly", "Mayar.id", "Market Analytics", "PRD Drafting"],
     },
     {
       id: "tele-badmin",
