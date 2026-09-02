@@ -157,9 +157,11 @@ export function ProjectDetailModal({ project, onClose }) {
             <div className="bg-[#121316] text-[#F3F4F6] p-6 rounded-2xl space-y-4 font-mono">
               <div className="flex items-center justify-between border-b border-[#2A2E37] pb-3">
                 <span className="text-xs font-bold text-[#FF5A00] tracking-wider uppercase">
-                  ⚡ BPMN FLOWCHART & SYSTEM LOGIC PROTOCOL:
+                  {project.id === 'speech-translator' ? '⚡ REAL-TIME AI ORCHESTRATION PIPELINE FLOW:' : '⚡ BPMN 2.0 PROTOCOL & SYSTEM LOGIC FLOW:'}
                 </span>
-                <span className="text-[10px] text-[#9CA3AF]">DUAL-MODALITY PROTOCOL</span>
+                <span className="text-[10px] text-[#9CA3AF]">
+                  {project.id === 'speech-translator' ? 'BIDIRECTIONAL AUDIO PIPELINE' : 'DUAL-MODALITY PROTOCOL'}
+                </span>
               </div>
 
               {/* Rich Visual BPMN 2.0 Flowchart Diagram (SVG) - Conditional per Project */}
